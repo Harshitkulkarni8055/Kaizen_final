@@ -1,0 +1,2976 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KAIZEN | Idea to Execution</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=Poppins:wght@600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #f0f9ff;
+            --glass-bg: rgba(255, 255, 255, 0.9);
+            --text-primary: #0c4a6e;
+            --text-secondary: #075985;
+            --border: rgba(12, 74, 110, 0.1);
+            --grad-start: #38bdf8;
+            --grad-end: #4f46e5;
+
+            /* Matrix Light Theme Colors (Darker Navy/Purple/Violet) */
+            --m-c1: #0f172a;
+            --m-c2: #1e1b4b;
+            --m-c3: #312e81;
+            --m-c4: #1e3a8a;
+            --m-c5: #4c1d95;
+            --m-c6: #581c87;
+            --m-c7: #3b0764;
+            --m-c8: #172554;
+            --m-fade: rgba(49, 46, 129, 0.5);
+        }
+
+        .dark {
+            --bg-main: #030712;
+            --glass-bg: rgba(17, 24, 39, 0.8);
+            --text-primary: #f0f9ff;
+            --text-secondary: #a7f3d0;
+            --border: rgba(255, 255, 255, 0.08);
+            --grad-start: #22d3ee;
+            --grad-end: #6366f1;
+
+            /* Matrix Dark Theme Colors (Bright sky/indigo/purple) */
+            --m-c1: #ffffff;
+            --m-c2: #0ea5e9;
+            --m-c3: #3b82f6;
+            --m-c4: #6366f1;
+            --m-c5: #8b5cf6;
+            --m-c6: #a855f7;
+            --m-c7: #c084fc;
+            --m-c8: #d8b4fe;
+            --m-fade: rgba(99, 102, 241, 0.8);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            transition: all 0.4s ease;
+        }
+
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(14px);
+            border: 1px solid var(--border);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, var(--grad-start) 0%, var(--grad-end) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+
+        /* Hero Spinning UI Styles */
+        .hero-spinner {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            perspective: 1000px;
+            transform-style: preserve-3d;
+            transform: scale(0.8) translateY(-85px);
+            /* Scaled up and moved upwards per user request */
+        }
+
+        /* 3 Distinct Rings */
+        .spinner-ring {
+            position: absolute;
+            inset: -20px;
+            border-radius: 50%;
+            border: 2px dashed rgba(14, 165, 233, 0.3);
+            transform-style: preserve-3d;
+        }
+
+        .ring-1 {
+            inset: 0;
+            transform: rotateX(60deg) rotateY(10deg);
+            animation: spinRing 8s linear infinite;
+        }
+
+        .ring-2 {
+            inset: -40px;
+            border-color: rgba(99, 102, 241, 0.3);
+            transform: rotateX(70deg) rotateY(-20deg);
+            animation: spinRing 12s linear infinite reverse;
+        }
+
+        .ring-3 {
+            inset: -80px;
+            border-color: rgba(244, 63, 94, 0.3);
+            transform: rotateX(50deg) rotateY(30deg);
+            animation: spinRing 10s linear infinite;
+        }
+
+        @keyframes spinRing {
+            0% {
+                transform: rotateX(var(--rx, 60deg)) rotateY(var(--ry, 0deg)) rotateZ(0deg);
+            }
+
+            100% {
+                transform: rotateX(var(--rx, 60deg)) rotateY(var(--ry, 0deg)) rotateZ(360deg);
+            }
+        }
+
+        /* Specific rx/ry locks for the animation to look stable */
+        .ring-1 {
+            --rx: 60deg;
+            --ry: 10deg;
+        }
+
+        .ring-2 {
+            --rx: 70deg;
+            --ry: -20deg;
+        }
+
+        .ring-3 {
+            --rx: 50deg;
+            --ry: 30deg;
+        }
+
+        .adjective-badge {
+            position: absolute;
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            padding: 10px;
+            /* Reduced padding to fit circle */
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            /* Circle shape! */
+            font-weight: 800;
+            font-size: 0.8rem;
+            /* Smaller font to fit */
+            color: var(--text-primary);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            /* Stack icon and text */
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
+            white-space: normal;
+            /* Allow text wrapping if needed */
+            gap: 4px;
+            /* Counter-rotate to stay upright */
+            animation: counterSpin var(--dur) linear infinite var(--dir);
+            /* Initial placement on ring */
+            top: 0;
+            left: 50%;
+            transform-origin: center;
+            /* Move up out of the ring slightly so they float above */
+            margin-top: -24px;
+            margin-left: -60px;
+        }
+
+        .dark .adjective-badge {
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        @keyframes counterSpin {
+            0% {
+                transform: rotateZ(0deg) rotateY(calc(-1 * var(--ry))) rotateX(calc(-1 * var(--rx)));
+            }
+
+            100% {
+                transform: rotateZ(-360deg) rotateY(calc(-1 * var(--ry))) rotateX(calc(-1 * var(--rx)));
+            }
+        }
+
+        .badge-1 {
+            color: #0ea5e9;
+            --dur: 8s;
+            --dir: normal;
+            --rx: 60deg;
+            --ry: 10deg;
+            border-color: rgba(14, 165, 233, 0.2);
+        }
+
+        .badge-2 {
+            color: #8b5cf6;
+            --dur: 12s;
+            --dir: reverse;
+            --rx: 70deg;
+            --ry: -20deg;
+            border-color: rgba(139, 92, 246, 0.2);
+        }
+
+        .badge-3 {
+            color: #f43f5e;
+            --dur: 10s;
+            --dir: normal;
+            --rx: 50deg;
+            --ry: 30deg;
+            border-color: rgba(244, 63, 94, 0.2);
+        }
+
+
+        /* Better Hover States */
+        .hero-spinner:hover .spinner-ring {
+            animation-play-state: paused;
+        }
+
+        .hero-spinner:hover .adjective-badge {
+            animation-play-state: paused;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* When pausing on hover, make badges pop and glow */
+        .hero-spinner:hover .badge-1 {
+            box-shadow: 0 0 30px rgba(14, 165, 233, 0.5);
+            background: rgba(14, 165, 233, 0.1);
+            z-index: 50;
+        }
+
+        .hero-spinner:hover .badge-2 {
+            box-shadow: 0 0 30px rgba(139, 92, 246, 0.5);
+            background: rgba(139, 92, 246, 0.1);
+            z-index: 50;
+        }
+
+        .hero-spinner:hover .badge-3 {
+            box-shadow: 0 0 30px rgba(244, 63, 94, 0.5);
+            background: rgba(244, 63, 94, 0.1);
+            z-index: 50;
+        }
+
+        /* Flip Card Styles */
+        .flip-card {
+            background-color: transparent;
+            width: 100%;
+            height: 250px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .flip-card.flipped {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 600px;
+            /* Big floating card */
+            height: clamp(500px, 80vh, 700px);
+            max-width: 90vw;
+            max-height: 90vh;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+            cursor: default;
+        }
+
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+            height: 100%;
+        }
+
+        /* Create a pseudo-element for the blur backdrop when a card is flipped */
+        body.card-is-flipped::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(8px);
+            z-index: 90;
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Close button for flipped card */
+        .close-card-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            padding: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            z-index: 110;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .flip-card.flipped .close-card-btn {
+            opacity: 1;
+            pointer-events: auto;
+            transition-delay: 0.3s;
+        }
+
+        .close-card-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        .flip-card-front,
+        .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+        }
+
+        /* The front of the card */
+        .flip-card-front {
+            background: var(--glass-bg);
+            backdrop-filter: blur(14px);
+            border: 1px solid var(--border);
+            border-top: 4px solid var(--grad-start);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* The back of the card */
+        .flip-card-back {
+            background: linear-gradient(135deg, var(--bg-main) 0%, rgba(14, 165, 233, 0.1) 100%);
+            border: 1px solid var(--border);
+            border-top: 4px solid var(--grad-end);
+            transform: rotateY(180deg);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
+        }
+
+        .dark .flip-card-front,
+        .dark .flip-card-back {
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Select Dropdown Theme Fix */
+        select {
+            background-color: rgba(255, 255, 255, 0.92) !important;
+            color: #0c4a6e !important;
+        }
+
+        .dark select {
+            background-color: rgba(15, 23, 42, 0.85) !important;
+            color: #f0f9ff !important;
+        }
+
+        select option {
+            background-color: #ffffff;
+            color: #0c4a6e;
+        }
+
+        .dark select option {
+            background-color: #1e293b;
+            color: #f0f9ff;
+        }
+
+        /* Scanner Button Styles */
+        .loader-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 90px;
+            width: 100%;
+            cursor: pointer;
+            font-family: "Poppins", sans-serif;
+            font-size: 1.1em;
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            margin-top: 10px;
+        }
+
+        .loader {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            z-index: 1;
+            mask: repeating-linear-gradient(90deg, transparent 0, transparent 6px, black 7px, black 8px);
+        }
+
+        .loader::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle at 50% 50%, #ff0 0%, transparent 50%), radial-gradient(circle at 45% 45%, #f00 0%, transparent 45%);
+            animation: scan 2s infinite alternate;
+        }
+
+        @keyframes scan {
+            0% {
+                transform: translate(-50%);
+            }
+
+            100% {
+                transform: translate(50%);
+            }
+        }
+
+        .loader-letter {
+            display: inline-block;
+            opacity: 0;
+            animation: glow 3s infinite linear;
+            z-index: 2;
+        }
+
+        @keyframes glow {
+            0% {
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+                text-shadow: 0 0 8px var(--grad-start);
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        /* From Uiverse.io by whoisyourdeadie */
+        .matrix-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            overflow: hidden;
+            z-index: -1;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .dark .matrix-container {
+            opacity: 0.85;
+            /* Brighter for dark theme */
+            filter: brightness(2.0) drop-shadow(0 0 8px rgba(14, 165, 233, 0.8));
+        }
+
+        body:not(.dark) .matrix-container {
+            opacity: 0.35;
+            /* Using darker colors, so we can increase opacity */
+            filter: brightness(0.8) contrast(1.2);
+        }
+
+        .matrix-pattern {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .matrix-column {
+            position: absolute;
+            top: -100%;
+            width: 20px;
+            height: 100%;
+            font-size: 16px;
+            line-height: 18px;
+            font-weight: bold;
+            animation: fall linear infinite;
+            white-space: nowrap;
+        }
+
+        .matrix-column::before {
+            content: "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: linear-gradient(to bottom,
+                    var(--m-c1) 0%,
+                    var(--m-c1) 5%,
+                    var(--m-c2) 10%,
+                    var(--m-c2) 20%,
+                    var(--m-c3) 30%,
+                    var(--m-c4) 40%,
+                    var(--m-c5) 50%,
+                    var(--m-c6) 60%,
+                    var(--m-c7) 70%,
+                    var(--m-c8) 80%,
+                    var(--m-fade) 90%,
+                    transparent 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            writing-mode: vertical-lr;
+            letter-spacing: 1px;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .matrix-column:nth-child(1) {
+            left: 0px;
+            animation-delay: -2.5s;
+            animation-duration: 3s;
+        }
+
+        .matrix-column:nth-child(2) {
+            left: 25px;
+            animation-delay: -3.2s;
+            animation-duration: 4s;
+        }
+
+        .matrix-column:nth-child(3) {
+            left: 50px;
+            animation-delay: -1.8s;
+            animation-duration: 2.5s;
+        }
+
+        .matrix-column:nth-child(4) {
+            left: 75px;
+            animation-delay: -2.9s;
+            animation-duration: 3.5s;
+        }
+
+        .matrix-column:nth-child(5) {
+            left: 100px;
+            animation-delay: -1.5s;
+            animation-duration: 3s;
+        }
+
+        .matrix-column:nth-child(6) {
+            left: 125px;
+            animation-delay: -3.8s;
+            animation-duration: 4.5s;
+        }
+
+        .matrix-column:nth-child(7) {
+            left: 150px;
+            animation-delay: -2.1s;
+            animation-duration: 2.8s;
+        }
+
+        .matrix-column:nth-child(8) {
+            left: 175px;
+            animation-delay: -2.7s;
+            animation-duration: 3.2s;
+        }
+
+        .matrix-column:nth-child(9) {
+            left: 200px;
+            animation-delay: -3.4s;
+            animation-duration: 3.8s;
+        }
+
+        .matrix-column:nth-child(10) {
+            left: 225px;
+            animation-delay: -1.9s;
+            animation-duration: 2.7s;
+        }
+
+        .matrix-column:nth-child(11) {
+            left: 250px;
+            animation-delay: -3.6s;
+            animation-duration: 4.2s;
+        }
+
+        .matrix-column:nth-child(12) {
+            left: 275px;
+            animation-delay: -2.3s;
+            animation-duration: 3.1s;
+        }
+
+        .matrix-column:nth-child(13) {
+            left: 300px;
+            animation-delay: -3.1s;
+            animation-duration: 3.6s;
+        }
+
+        .matrix-column:nth-child(14) {
+            left: 325px;
+            animation-delay: -2.6s;
+            animation-duration: 2.9s;
+        }
+
+        .matrix-column:nth-child(15) {
+            left: 350px;
+            animation-delay: -3.7s;
+            animation-duration: 4.1s;
+        }
+
+        .matrix-column:nth-child(16) {
+            left: 375px;
+            animation-delay: -2.8s;
+            animation-duration: 3.3s;
+        }
+
+        .matrix-column:nth-child(17) {
+            left: 400px;
+            animation-delay: -3.3s;
+            animation-duration: 3.7s;
+        }
+
+        .matrix-column:nth-child(18) {
+            left: 425px;
+            animation-delay: -2.2s;
+            animation-duration: 2.6s;
+        }
+
+        .matrix-column:nth-child(19) {
+            left: 450px;
+            animation-delay: -3.9s;
+            animation-duration: 4.3s;
+        }
+
+        .matrix-column:nth-child(20) {
+            left: 475px;
+            animation-delay: -2.4s;
+            animation-duration: 3.4s;
+        }
+
+        .matrix-column:nth-child(21) {
+            left: 500px;
+            animation-delay: -1.7s;
+            animation-duration: 2.4s;
+        }
+
+        .matrix-column:nth-child(22) {
+            left: 525px;
+            animation-delay: -3.5s;
+            animation-duration: 3.9s;
+        }
+
+        .matrix-column:nth-child(23) {
+            left: 550px;
+            animation-delay: -2s;
+            animation-duration: 3s;
+        }
+
+        .matrix-column:nth-child(24) {
+            left: 575px;
+            animation-delay: -4s;
+            animation-duration: 4.4s;
+        }
+
+        .matrix-column:nth-child(25) {
+            left: 600px;
+            animation-delay: -1.6s;
+            animation-duration: 2.3s;
+        }
+
+        .matrix-column:nth-child(26) {
+            left: 625px;
+            animation-delay: -3s;
+            animation-duration: 3.5s;
+        }
+
+        .matrix-column:nth-child(27) {
+            left: 650px;
+            animation-delay: -3.8s;
+            animation-duration: 4s;
+        }
+
+        .matrix-column:nth-child(28) {
+            left: 675px;
+            animation-delay: -2.5s;
+            animation-duration: 2.8s;
+        }
+
+        .matrix-column:nth-child(29) {
+            left: 700px;
+            animation-delay: -3.2s;
+            animation-duration: 3.6s;
+        }
+
+        .matrix-column:nth-child(30) {
+            left: 725px;
+            animation-delay: -2.7s;
+            animation-duration: 3.2s;
+        }
+
+        .matrix-column:nth-child(31) {
+            left: 750px;
+            animation-delay: -1.8s;
+            animation-duration: 2.7s;
+        }
+
+        .matrix-column:nth-child(32) {
+            left: 775px;
+            animation-delay: -3.6s;
+            animation-duration: 4.1s;
+        }
+
+        .matrix-column:nth-child(33) {
+            left: 800px;
+            animation-delay: -2.1s;
+            animation-duration: 3.1s;
+        }
+
+        .matrix-column:nth-child(34) {
+            left: 825px;
+            animation-delay: -3.4s;
+            animation-duration: 3.7s;
+        }
+
+        .matrix-column:nth-child(35) {
+            left: 850px;
+            animation-delay: -2.8s;
+            animation-duration: 2.9s;
+        }
+
+        .matrix-column:nth-child(36) {
+            left: 875px;
+            animation-delay: -3.7s;
+            animation-duration: 4.2s;
+        }
+
+        .matrix-column:nth-child(37) {
+            left: 900px;
+            animation-delay: -2.3s;
+            animation-duration: 3.3s;
+        }
+
+        .matrix-column:nth-child(38) {
+            left: 925px;
+            animation-delay: -1.9s;
+            animation-duration: 2.5s;
+        }
+
+        .matrix-column:nth-child(39) {
+            left: 950px;
+            animation-delay: -3.5s;
+            animation-duration: 3.8s;
+        }
+
+        .matrix-column:nth-child(40) {
+            left: 975px;
+            animation-delay: -2.6s;
+            animation-duration: 3.4s;
+        }
+
+        .matrix-column:nth-child(odd)::before {
+            content: "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン123456789";
+        }
+
+        .matrix-column:nth-child(even)::before {
+            content: "ガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポヴァィゥェォャュョッABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        }
+
+        .matrix-column:nth-child(3n)::before {
+            content: "アカサタナハマヤラワイキシチニヒミリウクスツヌフムユルエケセテネヘメレオコソトノホモヨロヲン0987654321";
+        }
+
+        .matrix-column:nth-child(4n)::before {
+            content: "ンヲロヨモホノトソコオレメヘネテセケエルユムフヌツスクウリミヒニチシキイワラヤマハナタサカア";
+        }
+
+        .matrix-column:nth-child(5n)::before {
+            content: "ガザダバパギジヂビピグズヅブプゲゼデベペゴゾドボポヴァィゥェォャュョッ!@#$%^&*()_+-=[]{}|;:,.<>?";
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-10%);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(200%);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .matrix-column {
+                font-size: 14px;
+                line-height: 16px;
+                width: 18px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .matrix-column {
+                font-size: 12px;
+                line-height: 14px;
+                width: 15px;
+            }
+        }
+
+        /* Peg Top Loader (andrew-manzyk) */
+        .pegtop-loader {
+            --fill-color: var(--grad-end);
+            /* Using theme grad-end */
+            --shine-color: rgba(99, 102, 241, 0.2);
+            transform: scale(0.8);
+            width: 100px;
+            height: 100px;
+            position: relative;
+            filter: drop-shadow(0 0 10px var(--shine-color));
+            margin: 0 auto;
+        }
+
+        .pegtop-loader #pegtopone {
+            position: absolute;
+            animation: flowe-one 1s linear infinite;
+        }
+
+        .pegtop-loader #pegtoptwo {
+            position: absolute;
+            opacity: 0;
+            transform: scale(0) translateY(-200px) translateX(-100px);
+            animation: flowe-two 1s linear infinite;
+            animation-delay: 0.3s;
+        }
+
+        .pegtop-loader #pegtopthree {
+            position: absolute;
+            opacity: 0;
+            transform: scale(0) translateY(-200px) translateX(100px);
+            animation: flowe-three 1s linear infinite;
+            animation-delay: 0.6s;
+        }
+
+        .pegtop-loader svg g path:first-child {
+            fill: var(--fill-color);
+        }
+
+        @keyframes flowe-one {
+            0% {
+                transform: scale(0.5) translateY(-200px);
+                opacity: 0;
+            }
+
+            25% {
+                transform: scale(0.75) translateY(-100px);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1) translateY(0px);
+                opacity: 1;
+            }
+
+            75% {
+                transform: scale(0.5) translateY(50px);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(0) translateY(100px);
+                opacity: 0;
+            }
+        }
+
+        @keyframes flowe-two {
+            0% {
+                transform: scale(0.5) rotateZ(-10deg) translateY(-200px) translateX(-100px);
+                opacity: 0;
+            }
+
+            25% {
+                transform: scale(1) rotateZ(-5deg) translateY(-100px) translateX(-50px);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1) rotateZ(0deg) translateY(0px) translateX(-25px);
+                opacity: 1;
+            }
+
+            75% {
+                transform: scale(0.5) rotateZ(5deg) translateY(50px) translateX(0px);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(0) rotateZ(10deg) translateY(100px) translateX(25px);
+                opacity: 0;
+            }
+        }
+
+        @keyframes flowe-three {
+            0% {
+                transform: scale(0.5) rotateZ(10deg) translateY(-200px) translateX(100px);
+                opacity: 0;
+            }
+
+            25% {
+                transform: scale(1) rotateZ(5deg) translateY(-100px) translateX(50px);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1) rotateZ(0deg) translateY(0px) translateX(25px);
+                opacity: 1;
+            }
+
+            75% {
+                transform: scale(0.5) rotateZ(-5deg) translateY(50px) translateX(0px);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(0) rotateZ(-10deg) translateY(100px) translateX(-25px);
+                opacity: 0;
+            }
+        }
+
+        /* From Uiverse.io by JustCode14 Theme Switch */
+        .switch {
+            font-size: 14px;
+            /* Scaled slightly to fit nav */
+            position: relative;
+            display: inline-block;
+            width: 4em;
+            height: 2.2em;
+            border-radius: 30px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #2a2a2a;
+            transition: 0.4s;
+            border-radius: 30px;
+            overflow: hidden;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 1.2em;
+            width: 1.2em;
+            border-radius: 20px;
+            left: 0.5em;
+            bottom: 0.5em;
+            transition: 0.4s cubic-bezier(0.81, -0.04, 0.38, 1.5);
+            box-shadow: inset 8px -4px 0px 0px #fff;
+        }
+
+        .switch input:checked+.slider {
+            background-color: #00a6ff;
+        }
+
+        .switch input:checked+.slider:before {
+            transform: translateX(1.8em);
+            box-shadow: inset 15px -4px 0px 15px #ffcf48;
+        }
+
+        .star {
+            background-color: #fff;
+            border-radius: 50%;
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            transition: all 0.4s;
+        }
+
+        .star_1 {
+            left: 2.5em;
+            top: 0.5em;
+        }
+
+        .star_2 {
+            left: 2.2em;
+            top: 1.2em;
+        }
+
+        .star_3 {
+            left: 3em;
+            top: 0.9em;
+        }
+
+        .switch input:checked~.slider .star {
+            opacity: 0;
+        }
+
+        .cloud {
+            width: 3.5em;
+            position: absolute;
+            bottom: -1.4em;
+            left: -1.1em;
+            opacity: 0;
+            transition: all 0.4s;
+        }
+
+        .switch input:checked~.slider .cloud {
+            opacity: 1;
+        }
+
+        /* From Uiverse.io by Ashon-G Upgrade Button Theme */
+        .uiverse {
+            --duration: 7s;
+            --easing: linear;
+            --c-color-1: rgba(99, 102, 241, 0.7);
+            /* Swapping to theme indigos */
+            --c-color-2: #4f46e5;
+            --c-color-3: #6366f1;
+            --c-color-4: rgba(129, 140, 248, 0.7);
+            --c-shadow: rgba(79, 70, 229, 0.5);
+            --c-shadow-inset-top: rgba(99, 102, 241, 0.9);
+            --c-shadow-inset-bottom: rgba(199, 210, 254, 0.8);
+            --c-radial-inner: #4f46e5;
+            --c-radial-outer: #312e81;
+            --c-color: #fff;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-appearance: none;
+            outline: none;
+            position: relative;
+            cursor: pointer;
+            border: none;
+            display: table;
+            border-radius: 24px;
+            padding: 0;
+            margin: 0;
+            text-align: center;
+            font-weight: 800;
+            font-size: 14px;
+            letter-spacing: 0.05em;
+            line-height: 1.5;
+            color: var(--c-color);
+            background: radial-gradient(circle, var(--c-radial-inner), var(--c-radial-outer) 80%);
+            box-shadow: 0 0 14px var(--c-shadow);
+            transform: scale(0.85);
+            /* scale down to fit navbar nicely */
+        }
+
+        .uiverse:before {
+            content: "";
+            pointer-events: none;
+            position: absolute;
+            z-index: 3;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 24px;
+            box-shadow: inset 0 3px 12px var(--c-shadow-inset-top), inset 0 -3px 4px var(--c-shadow-inset-bottom);
+        }
+
+        .uiverse .wrapper {
+            -webkit-mask-image: -webkit-radial-gradient(white, black);
+            overflow: hidden;
+            border-radius: 24px;
+            min-width: 132px;
+            padding: 12px 0;
+        }
+
+        .uiverse .wrapper span {
+            display: inline-block;
+            position: relative;
+            z-index: 1;
+        }
+
+        .uiverse:hover {
+            --duration: 1400ms;
+        }
+
+        .uiverse .wrapper .circle {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            filter: blur(var(--blur, 8px));
+            background: var(--background, transparent);
+            transform: translate(var(--x, 0), var(--y, 0)) translateZ(0);
+            animation: var(--animation, none) var(--duration) var(--easing) infinite;
+        }
+
+        .uiverse .wrapper .circle.circle-1,
+        .uiverse .wrapper .circle.circle-9,
+        .uiverse .wrapper .circle.circle-10 {
+            --background: var(--c-color-4);
+        }
+
+        .uiverse .wrapper .circle.circle-3,
+        .uiverse .wrapper .circle.circle-4 {
+            --background: var(--c-color-2);
+            --blur: 14px;
+        }
+
+        .uiverse .wrapper .circle.circle-5,
+        .uiverse .wrapper .circle.circle-6 {
+            --background: var(--c-color-3);
+            --blur: 16px;
+        }
+
+        .uiverse .wrapper .circle.circle-2,
+        .uiverse .wrapper .circle.circle-7,
+        .uiverse .wrapper .circle.circle-8,
+        .uiverse .wrapper .circle.circle-11,
+        .uiverse .wrapper .circle.circle-12 {
+            --background: var(--c-color-1);
+            --blur: 12px;
+        }
+
+        .uiverse .wrapper .circle.circle-1 {
+            --x: 0;
+            --y: -40px;
+            --animation: circle-1;
+        }
+
+        .uiverse .wrapper .circle.circle-2 {
+            --x: 92px;
+            --y: 8px;
+            --animation: circle-2;
+        }
+
+        .uiverse .wrapper .circle.circle-3 {
+            --x: -12px;
+            --y: -12px;
+            --animation: circle-3;
+        }
+
+        .uiverse .wrapper .circle.circle-4 {
+            --x: 80px;
+            --y: -12px;
+            --animation: circle-4;
+        }
+
+        .uiverse .wrapper .circle.circle-5 {
+            --x: 12px;
+            --y: -4px;
+            --animation: circle-5;
+        }
+
+        .uiverse .wrapper .circle.circle-6 {
+            --x: 56px;
+            --y: 16px;
+            --animation: circle-6;
+        }
+
+        .uiverse .wrapper .circle.circle-7 {
+            --x: 8px;
+            --y: 28px;
+            --animation: circle-7;
+        }
+
+        .uiverse .wrapper .circle.circle-8 {
+            --x: 28px;
+            --y: -4px;
+            --animation: circle-8;
+        }
+
+        .uiverse .wrapper .circle.circle-9 {
+            --x: 20px;
+            --y: -12px;
+            --animation: circle-9;
+        }
+
+        .uiverse .wrapper .circle.circle-10 {
+            --x: 64px;
+            --y: 16px;
+            --animation: circle-10;
+        }
+
+        .uiverse .wrapper .circle.circle-11 {
+            --x: 4px;
+            --y: 4px;
+            --animation: circle-11;
+        }
+
+        .uiverse .wrapper .circle.circle-12 {
+            --blur: 14px;
+            --x: 52px;
+            --y: 4px;
+            --animation: circle-12;
+        }
+
+        @keyframes circle-1 {
+            33% {
+                transform: translate(0px, 16px) translateZ(0);
+            }
+
+            66% {
+                transform: translate(12px, 64px) translateZ(0);
+            }
+        }
+
+        @keyframes circle-2 {
+            33% {
+                transform: translate(80px, -10px) translateZ(0);
+            }
+
+            66% {
+                transform: translate(72px, -48px) translateZ(0);
+            }
+        }
+
+        @keyframes circle-3 {
+            33% {
+                transform: translate(20px, 12px) translateZ(0);
+            }
+
+            66% {
+                transform: translate(12px, 4px) translateZ(0);
+            }
+        }
+
+        @keyframes circle-4 {
+            33% {
+                transform: translate(76px, -12px) translateZ(0);
+            }
+
+            66% {
+                transform: translate(112px, -8px) translateZ(0);
+            }
+        }
+
+        @keyframes circle-5 {
+            33% {
+                transform: translate(84px, 28px) translateZ(0);
+            }
+
+            66% {
+                transform: translate(40px, -32px) translateZ(0);
+            }
+        }
+
+        @keyframes circle-6 {
+            33% {
+                transform: translate(28px, -16px) translateZ(0);
+            }
+
+            66% {
+                transform: translate(76px, -56px) translateZ(0);
+            }
+        }
+
+        @keyframes circle-7 {
+            33% {
+                transform: translate(8px, 28px) translateZ(0);
+            }
+
+            66% {
+                transform: translate(20px, -60px) translateZ(0);
+            }
+        }
+
+        @keyframes circle-8 {
+            33% {
+                transform: translate(32px, -4px) translateZ(0);
+            }
+
+            66% {
+                transform: translate(56px, -20px) translateZ(0);
+            }
+        }
+
+        @keyframes circle-9 {
+            33% {
+                transform: translate(20px, -12px) translateZ(0);
+            }
+
+            66% {
+                transform: translate(80px, -8px) translateZ(0);
+            }
+        }
+
+        @keyframes circle-10 {
+            33% {
+                transform: translate(68px, 20px) translateZ(0);
+            }
+
+            66% {
+                transform: translate(100px, 28px) translateZ(0);
+            }
+        }
+
+        @keyframes circle-11 {
+            33% {
+                transform: translate(4px, 4px) translateZ(0);
+            }
+
+            66% {
+                transform: translate(68px, 20px) translateZ(0);
+            }
+        }
+
+        @keyframes circle-12 {
+            33% {
+                transform: translate(56px, 0px) translateZ(0);
+            }
+
+            66% {
+                transform: translate(60px, -32px) translateZ(0);
+            }
+        }
+
+        /* From Uiverse.io by alexs_8179 - modified for transparent integration */
+        .bouncing-ui-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            /* Significantly larger scale (1.6), and shifted down securely beneath the atom */
+            transform: translate(-50%, 60px) scale(1.6);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        @keyframes bounce-shape {
+
+            0%,
+            100% {
+                transform: translateY(36px);
+            }
+
+            50% {
+                transform: translateY(46px);
+            }
+        }
+
+        @keyframes bounce2-shape {
+
+            0%,
+            100% {
+                transform: translateY(46px);
+            }
+
+            50% {
+                transform: translateY(56px);
+            }
+        }
+
+        @keyframes umbral {
+            0% {
+                stop-color: #10bcd32e;
+            }
+
+            50% {
+                stop-color: #2fcad8;
+            }
+
+            100% {
+                stop-color: #10d3982e;
+            }
+        }
+
+        @keyframes particles-anim {
+
+            0%,
+            100% {
+                transform: translateY(16px);
+            }
+
+            50% {
+                transform: translateY(6px);
+            }
+        }
+
+        .bouncing-ui-container #particles {
+            animation: particles-anim 4s ease-in-out infinite;
+        }
+
+        .bouncing-ui-container #animatedStop {
+            animation: umbral 4s infinite;
+        }
+
+        .bouncing-ui-container #bounce {
+            animation: bounce-shape 4s ease-in-out infinite;
+            transform: translateY(36px);
+        }
+
+        .bouncing-ui-container #bounce2 {
+            animation: bounce2-shape 4s ease-in-out infinite;
+            transform: translateY(46px);
+            animation-delay: 0.5s;
+        }
+
+        /* Pricing Modal Styles */
+        .pricing-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(16px);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+
+        .pricing-modal-overlay.hidden {
+            display: none;
+        }
+
+        .pricing-modal-inner {
+            position: relative;
+            width: 100%;
+            max-width: 1100px;
+            max-height: 90vh;
+            overflow-y: auto;
+            border-radius: 2.5rem;
+            padding: 3rem 2rem;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.6);
+        }
+
+        .pricing-card {
+            border-radius: 2rem;
+            padding: 2.5rem 2rem;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.03);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-6px);
+        }
+
+        .pricing-card.featured {
+            border-color: rgba(99, 102, 241, 0.5);
+            background: linear-gradient(150deg, rgba(99, 102, 241, 0.1) 0%, rgba(34, 211, 238, 0.05) 100%);
+            box-shadow: 0 0 60px rgba(99, 102, 241, 0.2);
+        }
+
+        .pricing-feat {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 0.6rem 0;
+            font-size: 0.9rem;
+            opacity: 0.85;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .pricing-feat:last-child {
+            border-bottom: none;
+        }
+
+        .pricing-feat .check {
+            color: #22d3ee;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .pricing-feat .cross {
+            color: rgba(255, 255, 255, 0.25);
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        /* Footer Styles */
+        .footer-glass {
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .dark .footer-glass {
+            background: rgba(3, 7, 18, 0.6);
+        }
+
+        .footer-link {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .footer-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--grad-start);
+            transition: width 0.3s ease;
+        }
+
+        .footer-link:hover::after {
+            width: 100%;
+        }
+
+        .social-icon {
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .social-icon:hover {
+            transform: translateY(-5px) scale(1.1);
+            color: var(--grad-start);
+            filter: drop-shadow(0 0 8px var(--grad-start));
+        }
+    </style>
+
+
+
+
+</head>
+
+<body class="antialiased">
+    <!-- Matrix Background -->
+    <div class="matrix-container pointer-events-none">
+        <div class="matrix-pattern w-full h-full">
+            <div class="matrix-column"
+                style="left: 0.0%; animation-delay: -3.745747655095859s; animation-duration: 7.285404881150382s; opacity: 0.7647805432744992">
+            </div>
+            <div class="matrix-column"
+                style="left: 1.4285714285714286%; animation-delay: -0.7877979285297754s; animation-duration: 5.534537049264945s; opacity: 0.5977169052696941">
+            </div>
+            <div class="matrix-column"
+                style="left: 2.857142857142857%; animation-delay: -1.8815712684260588s; animation-duration: 6.582270273440095s; opacity: 0.6350525039845787">
+            </div>
+            <div class="matrix-column"
+                style="left: 4.285714285714286%; animation-delay: -5.086251365680534s; animation-duration: 7.600682831827461s; opacity: 0.5867127676993327">
+            </div>
+            <div class="matrix-column"
+                style="left: 5.714285714285714%; animation-delay: -9.813136679013146s; animation-duration: 6.602897861676647s; opacity: 0.5567805391477246">
+            </div>
+            <div class="matrix-column"
+                style="left: 7.142857142857142%; animation-delay: -2.310736552796655s; animation-duration: 6.419902327675351s; opacity: 0.8395606192459599">
+            </div>
+            <div class="matrix-column"
+                style="left: 8.571428571428571%; animation-delay: -4.079104157830153s; animation-duration: 7.245271806156774s; opacity: 0.656165543385073">
+            </div>
+            <div class="matrix-column"
+                style="left: 10.0%; animation-delay: -0.6387891495110809s; animation-duration: 5.094108388507612s; opacity: 0.6386402625549823">
+            </div>
+            <div class="matrix-column"
+                style="left: 11.428571428571429%; animation-delay: -3.6448613356369606s; animation-duration: 4.133403651701289s; opacity: 0.5459675786468163">
+            </div>
+            <div class="matrix-column"
+                style="left: 12.857142857142856%; animation-delay: -3.6349983950826914s; animation-duration: 3.473366414282526s; opacity: 0.7377659597881623">
+            </div>
+            <div class="matrix-column"
+                style="left: 14.285714285714285%; animation-delay: -2.2823920919868366s; animation-duration: 4.076305185172153s; opacity: 0.9575478755714527">
+            </div>
+            <div class="matrix-column"
+                style="left: 15.714285714285714%; animation-delay: -4.43448056025789s; animation-duration: 5.218614092117931s; opacity: 0.7428322847142201">
+            </div>
+            <div class="matrix-column"
+                style="left: 17.142857142857142%; animation-delay: -2.0889335053669553s; animation-duration: 5.203749278605066s; opacity: 0.6645336757138511">
+            </div>
+            <div class="matrix-column"
+                style="left: 18.571428571428573%; animation-delay: -0.5236925960396543s; animation-duration: 3.3136726991784373s; opacity: 0.9145028581492368">
+            </div>
+            <div class="matrix-column"
+                style="left: 20.0%; animation-delay: -6.426673922434917s; animation-duration: 4.8389485962882475s; opacity: 0.6938913394588431">
+            </div>
+            <div class="matrix-column"
+                style="left: 21.428571428571427%; animation-delay: -2.8892864960044893s; animation-duration: 4.064098316881877s; opacity: 0.5921016974542377">
+            </div>
+            <div class="matrix-column"
+                style="left: 22.857142857142858%; animation-delay: -4.318894851915295s; animation-duration: 7.310350919373091s; opacity: 0.983653854427104">
+            </div>
+            <div class="matrix-column"
+                style="left: 24.285714285714285%; animation-delay: -6.640036580617927s; animation-duration: 5.659429236656147s; opacity: 0.8156572423163717">
+            </div>
+            <div class="matrix-column"
+                style="left: 25.71428571428571%; animation-delay: -2.2840155269001206s; animation-duration: 7.820337892629357s; opacity: 0.541630028997937">
+            </div>
+            <div class="matrix-column"
+                style="left: 27.142857142857142%; animation-delay: -7.647829126107993s; animation-duration: 4.914935335383706s; opacity: 0.7846296561213015">
+            </div>
+            <div class="matrix-column"
+                style="left: 28.57142857142857%; animation-delay: -1.1458615614349321s; animation-duration: 4.431024852540814s; opacity: 0.5120857866234791">
+            </div>
+            <div class="matrix-column"
+                style="left: 30.0%; animation-delay: -3.541738150622481s; animation-duration: 7.03643814824125s; opacity: 0.5835794491040444">
+            </div>
+            <div class="matrix-column"
+                style="left: 31.428571428571427%; animation-delay: -0.3254562652673898s; animation-duration: 3.950664729475315s; opacity: 0.896188391459861">
+            </div>
+            <div class="matrix-column"
+                style="left: 32.857142857142854%; animation-delay: -9.46789196638117s; animation-duration: 7.805085798129522s; opacity: 0.9914214843173889">
+            </div>
+            <div class="matrix-column"
+                style="left: 34.285714285714285%; animation-delay: -8.088869279763275s; animation-duration: 4.7443478910101184s; opacity: 0.9283573473119575">
+            </div>
+            <div class="matrix-column"
+                style="left: 35.714285714285715%; animation-delay: -6.784315835233227s; animation-duration: 4.474144011490599s; opacity: 0.683892275386685">
+            </div>
+            <div class="matrix-column"
+                style="left: 37.142857142857146%; animation-delay: -7.585089257214662s; animation-duration: 3.807997892003403s; opacity: 0.5746455367494263">
+            </div>
+            <div class="matrix-column"
+                style="left: 38.57142857142858%; animation-delay: -3.961699962748757s; animation-duration: 5.221574883671776s; opacity: 0.7278911124408417">
+            </div>
+            <div class="matrix-column"
+                style="left: 40.0%; animation-delay: -2.95627189111626s; animation-duration: 4.74019065973458s; opacity: 0.5882937400456711">
+            </div>
+            <div class="matrix-column"
+                style="left: 41.42857142857143%; animation-delay: -5.253810280644711s; animation-duration: 7.391930399452791s; opacity: 0.9944842682643118">
+            </div>
+            <div class="matrix-column"
+                style="left: 42.857142857142854%; animation-delay: -6.262187120242392s; animation-duration: 4.310254212306391s; opacity: 0.8493731728490921">
+            </div>
+            <div class="matrix-column"
+                style="left: 44.285714285714285%; animation-delay: -4.111931046847335s; animation-duration: 6.459263499001498s; opacity: 0.7600408999671197">
+            </div>
+            <div class="matrix-column"
+                style="left: 45.714285714285715%; animation-delay: -7.603787935623513s; animation-duration: 3.9956987752780044s; opacity: 0.6436559673822717">
+            </div>
+            <div class="matrix-column"
+                style="left: 47.14285714285714%; animation-delay: -1.2662895283963649s; animation-duration: 6.7059715624837395s; opacity: 0.7418682001051428">
+            </div>
+            <div class="matrix-column"
+                style="left: 48.57142857142857%; animation-delay: -3.735612599843181s; animation-duration: 5.945115022231299s; opacity: 0.7637322753814171">
+            </div>
+            <div class="matrix-column"
+                style="left: 50.0%; animation-delay: -5.849739626278618s; animation-duration: 5.071486044742482s; opacity: 0.6224755031906269">
+            </div>
+            <div class="matrix-column"
+                style="left: 51.42857142857142%; animation-delay: -2.4986882405424082s; animation-duration: 6.77799765560437s; opacity: 0.6431780751084026">
+            </div>
+            <div class="matrix-column"
+                style="left: 52.85714285714286%; animation-delay: -7.7637940631682945s; animation-duration: 5.8076920773981575s; opacity: 0.5259513675269727">
+            </div>
+            <div class="matrix-column"
+                style="left: 54.285714285714285%; animation-delay: -5.489692665826551s; animation-duration: 6.649067523848534s; opacity: 0.5819058716235596">
+            </div>
+            <div class="matrix-column"
+                style="left: 55.714285714285715%; animation-delay: -9.461913615901407s; animation-duration: 5.265433159863928s; opacity: 0.5135136306234699">
+            </div>
+            <div class="matrix-column"
+                style="left: 57.14285714285714%; animation-delay: -4.389015941661942s; animation-duration: 3.399389858473247s; opacity: 0.8831658318160549">
+            </div>
+            <div class="matrix-column"
+                style="left: 58.57142857142858%; animation-delay: -6.458115796950414s; animation-duration: 3.8442854038934495s; opacity: 0.6873118231730081">
+            </div>
+            <div class="matrix-column"
+                style="left: 60.0%; animation-delay: -2.6490172274234416s; animation-duration: 3.6397845431456295s; opacity: 0.8806785730941389">
+            </div>
+            <div class="matrix-column"
+                style="left: 61.42857142857143%; animation-delay: -8.745230061406716s; animation-duration: 4.265251272228216s; opacity: 0.807574905847478">
+            </div>
+            <div class="matrix-column"
+                style="left: 62.857142857142854%; animation-delay: -6.144840633972672s; animation-duration: 4.273013152370074s; opacity: 0.7754098619287323">
+            </div>
+            <div class="matrix-column"
+                style="left: 64.28571428571429%; animation-delay: -3.938869765554114s; animation-duration: 6.933902874186969s; opacity: 0.8028769450857351">
+            </div>
+            <div class="matrix-column"
+                style="left: 65.71428571428571%; animation-delay: -6.555597322274556s; animation-duration: 4.573573096532921s; opacity: 0.6617564815177508">
+            </div>
+            <div class="matrix-column"
+                style="left: 67.14285714285714%; animation-delay: -4.635685548125784s; animation-duration: 7.869805637264106s; opacity: 0.854481463781408">
+            </div>
+            <div class="matrix-column"
+                style="left: 68.57142857142857%; animation-delay: -1.2908142102651021s; animation-duration: 6.1436291328139925s; opacity: 0.6315703938926411">
+            </div>
+            <div class="matrix-column"
+                style="left: 70.0%; animation-delay: -0.39899954765849843s; animation-duration: 4.298731232338206s; opacity: 0.9387341251230307">
+            </div>
+            <div class="matrix-column"
+                style="left: 71.42857142857143%; animation-delay: -6.192201779414695s; animation-duration: 7.6500429295364105s; opacity: 0.5307318966282513">
+            </div>
+            <div class="matrix-column"
+                style="left: 72.85714285714285%; animation-delay: -3.350721166976337s; animation-duration: 7.631383862794302s; opacity: 0.5406092284433703">
+            </div>
+            <div class="matrix-column"
+                style="left: 74.28571428571429%; animation-delay: -4.696889924684765s; animation-duration: 3.1187833612408844s; opacity: 0.6218691646262939">
+            </div>
+            <div class="matrix-column"
+                style="left: 75.71428571428571%; animation-delay: -7.681779229373738s; animation-duration: 7.1187573772391275s; opacity: 0.681206311820816">
+            </div>
+            <div class="matrix-column"
+                style="left: 77.14285714285715%; animation-delay: -3.8778618842857115s; animation-duration: 4.284230145975705s; opacity: 0.7779687783374645">
+            </div>
+            <div class="matrix-column"
+                style="left: 78.57142857142857%; animation-delay: -0.1293387158287107s; animation-duration: 3.109986833343573s; opacity: 0.8304351997643142">
+            </div>
+            <div class="matrix-column"
+                style="left: 80.0%; animation-delay: -3.8517737352425643s; animation-duration: 6.1631966894300705s; opacity: 0.9720047380565724">
+            </div>
+            <div class="matrix-column"
+                style="left: 81.42857142857143%; animation-delay: -9.018152615074607s; animation-duration: 7.729846483537973s; opacity: 0.9781447096278377">
+            </div>
+            <div class="matrix-column"
+                style="left: 82.85714285714286%; animation-delay: -9.943003314462594s; animation-duration: 3.715472109156609s; opacity: 0.9863311985255151">
+            </div>
+            <div class="matrix-column"
+                style="left: 84.28571428571429%; animation-delay: -5.740512769704006s; animation-duration: 7.68896599339435s; opacity: 0.8321343029739181">
+            </div>
+            <div class="matrix-column"
+                style="left: 85.71428571428571%; animation-delay: -1.6318176311803312s; animation-duration: 4.729045903426808s; opacity: 0.7432926584496377">
+            </div>
+            <div class="matrix-column"
+                style="left: 87.14285714285714%; animation-delay: -8.384918999045292s; animation-duration: 3.7867765804358218s; opacity: 0.7431378714224244">
+            </div>
+            <div class="matrix-column"
+                style="left: 88.57142857142857%; animation-delay: -2.715782102650831s; animation-duration: 7.382117108059646s; opacity: 0.8578514790176127">
+            </div>
+            <div class="matrix-column"
+                style="left: 90.0%; animation-delay: -0.6522080071348402s; animation-duration: 6.380289923777202s; opacity: 0.5909828551609573">
+            </div>
+            <div class="matrix-column"
+                style="left: 91.42857142857143%; animation-delay: -5.536616138886954s; animation-duration: 5.501194911433681s; opacity: 0.7000496005788377">
+            </div>
+            <div class="matrix-column"
+                style="left: 92.85714285714286%; animation-delay: -7.904678452735273s; animation-duration: 4.382680409773688s; opacity: 0.5997500565825202">
+            </div>
+            <div class="matrix-column"
+                style="left: 94.28571428571428%; animation-delay: -2.9780346974866623s; animation-duration: 7.319336137283307s; opacity: 0.9423340637546023">
+            </div>
+            <div class="matrix-column"
+                style="left: 95.71428571428572%; animation-delay: -9.873175358824179s; animation-duration: 7.878660693200607s; opacity: 0.5254524889748593">
+            </div>
+            <div class="matrix-column"
+                style="left: 97.14285714285714%; animation-delay: -4.684575639585434s; animation-duration: 6.94081400130788s; opacity: 0.5655353652035734">
+            </div>
+            <div class="matrix-column"
+                style="left: 98.57142857142858%; animation-delay: -4.267993024628783s; animation-duration: 6.556125500304837s; opacity: 0.5392073840662885">
+            </div>
+        </div>
+    </div>
+
+
+    <nav class="fixed w-full z-50 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center glass rounded-3xl px-8 py-3">
+            <div class="text-3xl font-extrabold tracking-tighter gradient-text">改 KAIZEN</div>
+            <div class="flex items-center gap-6">
+                <label class="switch">
+                    <input id="theme-checkbox" type="checkbox" onchange="toggleTheme()" />
+                    <span class="slider">
+                        <div class="star star_1"></div>
+                        <div class="star star_2"></div>
+                        <div class="star star_3"></div>
+                        <svg viewBox="0 0 16 16" class="cloud_1 cloud">
+                            <path transform="matrix(.77976 0 0 .78395-299.99-418.63)" fill="#fff"
+                                d="m391.84 540.91c-.421-.329-.949-.524-1.523-.524-1.351 0-2.451 1.084-2.485 2.435-1.395.526-2.388 1.88-2.388 3.466 0 1.874 1.385 3.423 3.182 3.667v.034h12.73v-.006c1.775-.104 3.182-1.584 3.182-3.395 0-1.747-1.309-3.186-2.994-3.379.007-.106.011-.214.011-.322 0-2.707-2.271-4.901-5.072-4.901-2.073 0-3.856 1.202-4.643 2.925">
+                            </path>
+                        </svg>
+                    </span>
+                </label>
+                <div class="relative upgrade-dropdown-container">
+                    <button class="uiverse" onclick="toggleUpgradeMenu()">
+                        <div class="wrapper">
+                            <span>UPGRADE</span>
+                            <div class="circle circle-12"></div>
+                            <div class="circle circle-11"></div>
+                            <div class="circle circle-10"></div>
+                            <div class="circle circle-9"></div>
+                            <div class="circle circle-8"></div>
+                            <div class="circle circle-7"></div>
+                            <div class="circle circle-6"></div>
+                            <div class="circle circle-5"></div>
+                            <div class="circle circle-4"></div>
+                            <div class="circle circle-3"></div>
+                            <div class="circle circle-2"></div>
+                            <div class="circle circle-1"></div>
+                        </div>
+                    </button>
+                    <div id="upgrade-menu"
+                        class="hidden absolute right-0 mt-3 w-64 rounded-2xl shadow-xl glass overflow-hidden text-sm transform origin-top-right transition-all">
+                        <div class="p-2 space-y-1">
+                            <a href="#"
+                                class="block px-4 py-3 rounded-xl hover:bg-black/5 dark:hover:bg-white/10 font-semibold transition-colors">Student
+                                Subscription</a>
+                            <a href="#"
+                                class="block px-4 py-3 rounded-xl hover:bg-black/5 dark:hover:bg-white/10 font-semibold transition-colors">Monthly
+                                Subscription</a>
+                            <a href="#"
+                                class="block px-4 py-3 rounded-xl hover:bg-black/5 dark:hover:bg-white/10 font-semibold transition-colors text-indigo-600 dark:text-indigo-400">Yearly
+                                Subscription <span
+                                    class="ml-2 text-[10px] bg-indigo-100 dark:bg-indigo-900/50 px-2 py-0.5 rounded-full">Save
+                                    20%</span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-32 pb-20 px-6 max-w-7xl mx-auto">
+        <section id="hero-section" class="relative overflow-hidden w-full m-0 p-0 border-0 pt-10">
+
+
+            <div class="grid lg:grid-cols-2 gap-16 items-center min-h-[50vh]">
+                <!-- Left: Headline -->
+                <div class="flex flex-col justify-center">
+                    <h1 class="text-6xl md:text-8xl font-extrabold tracking-tighter leading-[0.9] mb-6">Where
+                        Ideas<br><span class="gradient-text">Meet Execution.</span></h1>
+                    <p class="text-xl md:text-2xl text-[var(--text-secondary)] font-medium max-w-lg">Transform your
+                        startup vision into an actionable roadmap with KAIZEN.</p>
+                </div>
+
+                <!-- Right: Spinning UI Element -->
+                <div class="flex justify-center items-center h-full relative perspective-1000">
+                    <div class="hero-spinner relative z-10">
+                        <!-- Orbit 1 (Inner) -->
+                        <div class="spinner-ring ring-1">
+                            <div class="adjective-badge badge-1">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                </svg>
+                                AI Powered
+                            </div>
+                        </div>
+
+                        <!-- Orbit 2 (Middle) -->
+                        <div class="spinner-ring ring-2">
+                            <div class="adjective-badge badge-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
+                                    </path>
+                                </svg>
+                                Data Driven
+                            </div>
+                        </div>
+
+                        <!-- Orbit 3 (Outer) -->
+                        <div class="spinner-ring ring-3">
+                            <div class="adjective-badge badge-3">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                                </svg>
+                                Action Oriented
+                            </div>
+                        </div>
+
+                        <!-- Core glowing sphere in center - elevated z-index -->
+                        <div
+                            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 rounded-full bg-gradient-to-tr from-sky-400 to-indigo-500 blur-xl opacity-40 z-10">
+                        </div>
+                        <div
+                            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full bg-gradient-to-tr from-sky-300 to-indigo-400 shadow-xl shadow-indigo-500/30 flex items-center justify-center text-white font-bold text-xl z-20">
+                            <span class="text-white text-3xl">改</span>
+                        </div>
+
+                        <!-- Bouncing Geometric UI underneath -->
+                        <div class="bouncing-ui-container">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="200" width="200">
+                                <g style="order: -1;">
+                                    <polygon transform="rotate(45 100 100)" stroke-width="1" stroke="#17afbd"
+                                        fill="none" points="70,70 148,50 130,130 50,150" id="bounce"></polygon>
+                                    <polygon transform="rotate(45 100 100)" stroke-width="1" stroke="#07e7fca4"
+                                        fill="none" points="70,70 148,50 130,130 50,150" id="bounce2"></polygon>
+                                    <polygon transform="rotate(45 100 100)" stroke-width="2" stroke="" fill="#414750"
+                                        points="70,70 150,50 130,130 50,150"></polygon>
+                                    <polygon stroke-width="2" stroke="" fill="url(#gradiente)"
+                                        points="100,70 150,100 100,130 50,100"></polygon>
+                                    <defs>
+                                        <linearGradient y2="100%" x2="10%" y1="0%" x1="0%" id="gradiente">
+                                            <stop style="stop-color: #1e2026;stop-opacity:1" offset="20%"></stop>
+                                            <stop style="stop-color:#414750;stop-opacity:1" offset="60%"></stop>
+                                        </linearGradient>
+                                    </defs>
+                                    <polygon transform="translate(20, 31)" stroke-width="2" stroke="" fill="#227f8b"
+                                        points="80,50 80,75 80,99 40,75"></polygon>
+                                    <polygon transform="translate(20, 31)" stroke-width="2" stroke=""
+                                        fill="url(#gradiente2)" points="40,-40 80,-40 80,99 40,75"></polygon>
+                                    <defs>
+                                        <linearGradient y2="100%" x2="0%" y1="-17%" x1="10%" id="gradiente2">
+                                            <stop style="stop-color: #1f474400;stop-opacity:1" offset="20%"></stop>
+                                            <stop style="stop-color:#10c6d354;stop-opacity:1" offset="100%"
+                                                id="animatedStop"></stop>
+                                        </linearGradient>
+                                    </defs>
+                                    <polygon transform="rotate(180 100 100) translate(20, 20)" stroke-width="2"
+                                        stroke="" fill="#17afbd" points="80,50 80,75 80,99 40,75"></polygon>
+                                    <polygon transform="rotate(0 100 100) translate(60, 20)" stroke-width="2" stroke=""
+                                        fill="url(#gradiente3)" points="40,-40 80,-40 80,85 40,110.2"></polygon>
+                                    <defs>
+                                        <linearGradient y2="100%" x2="10%" y1="0%" x1="0%" id="gradiente3">
+                                            <stop style="stop-color: #10ccd300;stop-opacity:1" offset="20%"></stop>
+                                            <stop style="stop-color:#d3a51054;stop-opacity:1" offset="100%"
+                                                id="animatedStop"></stop>
+                                        </linearGradient>
+                                    </defs>
+                                    <polygon transform="rotate(45 100 100) translate(80, 95)" stroke-width="2" stroke=""
+                                        fill="#ffffff" points="5,0 5,5 0,5 0,0" id="particles"></polygon>
+                                    <polygon transform="rotate(45 100 100) translate(80, 55)" stroke-width="2" stroke=""
+                                        fill="#17afbd" points="6,0 6,6 0,6 0,0" id="particles"></polygon>
+                                    <polygon transform="rotate(45 100 100) translate(70, 80)" stroke-width="2" stroke=""
+                                        fill="#17afbd" points="2,0 2,2 0,2 0,0" id="particles"></polygon>
+                                    <polygon stroke-width="2" stroke="" fill="#292d34"
+                                        points="29.5,99.8 100,142 100,172 29.5,130"></polygon>
+                                    <polygon transform="translate(50, 92)" stroke-width="2" stroke="" fill="#1f2127"
+                                        points="50,50 120.5,8 120.5,35 50,80"></polygon>
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Startup Description Input (Moved below hero) -->
+        <section id="input-section" class="mt-20">
+            <div
+                class="max-w-3xl mx-auto glass p-10 rounded-[40px] shadow-2xl shadow-indigo-500/10 dark:shadow-indigo-500/5 relative z-20">
+                <h2 class="text-3xl font-bold mb-6 text-center">Describe Your Startup</h2>
+                <textarea id="idea"
+                    class="w-full p-5 mb-6 rounded-2xl bg-transparent border-2 border-sky-200 dark:border-sky-800 focus:border-indigo-400 focus:ring-4 focus:ring-indigo-400/20 outline-none transition-all resize-none text-lg"
+                    rows="3" placeholder="I am building..."></textarea>
+
+                <!-- Expanded Inputs Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+
+                    <!-- Domain -->
+                    <div class="flex flex-col gap-2">
+                        <label class="text-xs font-bold uppercase tracking-wider text-[var(--text-secondary)]">Industry
+                            / Domain</label>
+                        <select id="domain"
+                            class="bg-transparent border-2 border-sky-200 dark:border-sky-800 focus:border-indigo-400 p-4 rounded-xl text-black dark:text-white outline-none cursor-pointer transition-colors w-full appearance-none">
+                            <option value="SaaS" class="dark:bg-gray-800 text-black dark:text-white">SaaS & Software
+                            </option>
+                            <option value="Fintech" class="dark:bg-gray-800 text-black dark:text-white">Fintech & Crypto
+                            </option>
+                            <option value="Edtech" class="dark:bg-gray-800 text-black dark:text-white">Edtech /
+                                E-Learning</option>
+                            <option value="Healthtech" class="dark:bg-gray-800 text-black dark:text-white">Healthtech &
+                                Wellness</option>
+                            <option value="E-commerce" class="dark:bg-gray-800 text-black dark:text-white">E-commerce /
+                                Marketplace</option>
+                            <option value="AI" class="dark:bg-gray-800 text-black dark:text-white">AI & Machine Learning
+                            </option>
+                            <option value="Other" class="dark:bg-gray-800 text-black dark:text-white">Other</option>
+                        </select>
+                    </div>
+
+                    <!-- Target Audience -->
+                    <div class="flex flex-col gap-2">
+                        <label class="text-xs font-bold uppercase tracking-wider text-[var(--text-secondary)]">Target
+                            Audience</label>
+                        <select id="audience"
+                            class="bg-transparent border-2 border-sky-200 dark:border-sky-800 focus:border-indigo-400 p-4 rounded-xl text-black dark:text-white outline-none cursor-pointer transition-colors w-full appearance-none">
+                            <option value="B2B-Enterprise" class="dark:bg-gray-800 text-black dark:text-white">B2B
+                                (Enterprise)</option>
+                            <option value="B2B-SMB" class="dark:bg-gray-800 text-black dark:text-white">B2B (Small
+                                Business)</option>
+                            <option value="B2C-GenZ" class="dark:bg-gray-800 text-black dark:text-white">B2C (Gen Z /
+                                Millennial)</option>
+                            <option value="B2C-Broad" class="dark:bg-gray-800 text-black dark:text-white">B2C (Broad
+                                Market)</option>
+                            <option value="B2B2C" class="dark:bg-gray-800 text-black dark:text-white">B2B2C Platform
+                            </option>
+                        </select>
+                    </div>
+
+                    <!-- Monetization Model -->
+                    <div class="flex flex-col gap-2">
+                        <label class="text-xs font-bold uppercase tracking-wider text-[var(--text-secondary)]">Revenue
+                            Model</label>
+                        <select id="monetization"
+                            class="bg-transparent border-2 border-sky-200 dark:border-sky-800 focus:border-indigo-400 p-4 rounded-xl text-black dark:text-white outline-none cursor-pointer transition-colors w-full appearance-none">
+                            <option value="Subscription" class="dark:bg-gray-800 text-black dark:text-white">Recurring
+                                Subscription</option>
+                            <option value="Freemium" class="dark:bg-gray-800 text-black dark:text-white">Freemium to
+                                Paid</option>
+                            <option value="One-Time" class="dark:bg-gray-800 text-black dark:text-white">One-Time
+                                License / Purchase</option>
+                            <option value="Usage-Based" class="dark:bg-gray-800 text-black dark:text-white">Usage /
+                                Token Based</option>
+                            <option value="Ads-Sponsorship" class="dark:bg-gray-800 text-black dark:text-white">
+                                Sponsorships / Ads</option>
+                        </select>
+                    </div>
+
+                    <!-- Founder Experience -->
+                    <div class="flex flex-col gap-2">
+                        <label class="text-xs font-bold uppercase tracking-wider text-[var(--text-secondary)]">Founder
+                            Experience</label>
+                        <select id="experience"
+                            class="bg-transparent border-2 border-sky-200 dark:border-sky-800 focus:border-indigo-400 p-4 rounded-xl text-black dark:text-white outline-none cursor-pointer transition-colors w-full appearance-none">
+                            <option value="Beginner" class="dark:bg-gray-800 text-black dark:text-white">First-time
+                                Founder</option>
+                            <option value="Intermediate" class="dark:bg-gray-800 text-black dark:text-white">Experienced
+                                Builder</option>
+                            <option value="Pro" class="dark:bg-gray-800 text-black dark:text-white">Serial Entrepreneur
+                            </option>
+                        </select>
+                    </div>
+
+                    <!-- Budget / Capital -->
+                    <div class="flex flex-col gap-2">
+                        <label class="text-xs font-bold uppercase tracking-wider text-[var(--text-secondary)]">Initial
+                            Budget</label>
+                        <select id="budget"
+                            class="bg-transparent border-2 border-sky-200 dark:border-sky-800 focus:border-indigo-400 p-4 rounded-xl text-black dark:text-white outline-none cursor-pointer transition-colors w-full appearance-none">
+                            <option value="Bootstrap" class="dark:bg-gray-800 text-black dark:text-white">$0 - $1,000
+                                (Bootstrapped)</option>
+                            <option value="Low" class="dark:bg-gray-800 text-black dark:text-white">$1k - $10k
+                                (Self-Funded)</option>
+                            <option value="Medium" class="dark:bg-gray-800 text-black dark:text-white">$10k - $50k
+                                (Pre-Seed/F&F)</option>
+                            <option value="High" class="dark:bg-gray-800 text-black dark:text-white">$50k+ (Seed Funded)
+                            </option>
+                        </select>
+                    </div>
+
+                    <!-- Development Speed -->
+                    <div class="flex flex-col gap-2">
+                        <label class="text-xs font-bold uppercase tracking-wider text-[var(--text-secondary)]">Target
+                            Timeline</label>
+                        <select id="timeline"
+                            class="bg-transparent border-2 border-sky-200 dark:border-sky-800 focus:border-indigo-400 p-4 rounded-xl text-black dark:text-white outline-none cursor-pointer transition-colors w-full appearance-none">
+                            <option value="Fast" class="dark:bg-gray-800 text-black dark:text-white">ASAP (1-4 weeks)
+                            </option>
+                            <option value="Medium" class="dark:bg-gray-800 text-black dark:text-white">Standard (1-3
+                                months)</option>
+                            <option value="Slow" class="dark:bg-gray-800 text-black dark:text-white">Long Term (3+
+                                months)</option>
+                        </select>
+                    </div>
+
+                </div>
+
+
+                <!-- Generate Button -->
+                <div id="generate-btn-wrapper"
+                    class="loader-wrapper hover:shadow-lg hover:shadow-indigo-500/20 transition-all"
+                    onclick="generateRoadmap()">
+                    <div class="loader"></div>
+                    <span class="loader-letter" style="animation-delay:0.1s">G</span><span class="loader-letter"
+                        style="animation-delay:0.2s">E</span><span class="loader-letter"
+                        style="animation-delay:0.3s">N</span><span class="loader-letter"
+                        style="animation-delay:0.4s">E</span><span class="loader-letter"
+                        style="animation-delay:0.5s">R</span><span class="loader-letter"
+                        style="animation-delay:0.6s">A</span><span class="loader-letter"
+                        style="animation-delay:0.7s">T</span><span class="loader-letter"
+                        style="animation-delay:0.8s">E</span><span>&nbsp;</span><span class="loader-letter"
+                        style="animation-delay:1.0s">R</span><span class="loader-letter"
+                        style="animation-delay:1.1s">O</span><span class="loader-letter"
+                        style="animation-delay:1.2s">A</span><span class="loader-letter"
+                        style="animation-delay:1.3s">D</span><span class="loader-letter"
+                        style="animation-delay:1.4s">M</span><span class="loader-letter"
+                        style="animation-delay:1.5s">A</span><span class="loader-letter"
+                        style="animation-delay:1.6s">P</span>
+                </div>
+
+                <!-- Peg Top Loader Element (Hidden explicitly initially) -->
+                <div id="processing-loader" class="hidden flex flex-col items-center justify-center py-8">
+                    <div class="text-xl font-bold mb-8 text-sky-500 animate-pulse">Analyzing Concept...</div>
+                    <div class="pegtop-loader">
+                        <svg id="pegtopone" xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 100 100">
+                            <defs>
+                                <filter id="shine">
+                                    <feGaussianBlur stdDeviation="3"></feGaussianBlur>
+                                </filter>
+                                <mask id="mask">
+                                    <path
+                                        d="M63,37c-6.7-4-4-27-13-27s-6.3,23-13,27-27,4-27,13,20.3,9,27,13,4,27,13,27,6.3-23,13-27,27-4,27-13-20.3-9-27-13Z"
+                                        fill="white"></path>
+                                </mask>
+                                <radialGradient id="gradient-1" cx="50" cy="66" fx="50" fy="66" r="30"
+                                    gradientTransform="translate(0 35) scale(1 0.5)" gradientUnits="userSpaceOnUse">
+                                    <stop offset="0%" stop-color="black" stop-opacity="0.3"></stop>
+                                    <stop offset="50%" stop-color="black" stop-opacity="0.1"></stop>
+                                    <stop offset="100%" stop-color="black" stop-opacity="0"></stop>
+                                </radialGradient>
+                                <radialGradient id="gradient-2" cx="55" cy="20" fx="55" fy="20" r="30"
+                                    gradientUnits="userSpaceOnUse">
+                                    <stop offset="0%" stop-color="white" stop-opacity="0.3"></stop>
+                                    <stop offset="50%" stop-color="white" stop-opacity="0.1"></stop>
+                                    <stop offset="100%" stop-color="white" stop-opacity="0"></stop>
+                                </radialGradient>
+                                <radialGradient id="gradient-3" cx="85" cy="50" fx="85" fy="50"
+                                    xlink:href="#gradient-2"></radialGradient>
+                                <radialGradient id="gradient-4" cx="50" cy="58" fx="50" fy="58" r="60"
+                                    gradientTransform="translate(0 47) scale(1 0.2)" xlink:href="#gradient-3">
+                                </radialGradient>
+                                <linearGradient id="gradient-5" x1="50" y1="90" x2="50" y2="10"
+                                    gradientUnits="userSpaceOnUse">
+                                    <stop offset="0%" stop-color="black" stop-opacity="0.2"></stop>
+                                    <stop offset="40%" stop-color="black" stop-opacity="0"></stop>
+                                </linearGradient>
+                            </defs>
+                            <g>
+                                <path
+                                    d="M63,37c-6.7-4-4-27-13-27s-6.3,23-13,27-27,4-27,13,20.3,9,27,13,4,27,13,27,6.3-23,13-27,27-4,27-13-20.3-9-27-13Z"
+                                    fill="currentColor"></path>
+                                <path
+                                    d="M63,37c-6.7-4-4-27-13-27s-6.3,23-13,27-27,4-27,13,20.3,9,27,13,4,27,13,27,6.3-23,13-27,27-4,27-13-20.3-9-27-13Z"
+                                    fill="url(#gradient-1)"></path>
+                                <path
+                                    d="M63,37c-6.7-4-4-27-13-27s-6.3,23-13,27-27,4-27,13,20.3,9,27,13,4,27,13,27,6.3-23,13-27,27-4,27-13-20.3-9-27-13Z"
+                                    fill="none" stroke="white" opacity="0.3" stroke-width="3" filter="url(#shine)"
+                                    mask="url(#mask)"></path>
+                                <path
+                                    d="M63,37c-6.7-4-4-27-13-27s-6.3,23-13,27-27,4-27,13,20.3,9,27,13,4,27,13,27,6.3-23,13-27,27-4,27-13-20.3-9-27-13Z"
+                                    fill="url(#gradient-2)"></path>
+                                <path
+                                    d="M63,37c-6.7-4-4-27-13-27s-6.3,23-13,27-27,4-27,13,20.3,9,27,13,4,27,13,27,6.3-23,13-27,27-4,27-13-20.3-9-27-13Z"
+                                    fill="url(#gradient-3)"></path>
+                                <path
+                                    d="M63,37c-6.7-4-4-27-13-27s-6.3,23-13,27-27,4-27,13,20.3,9,27,13,4,27,13,27,6.3-23,13-27,27-4,27-13-20.3-9-27-13Z"
+                                    fill="url(#gradient-4)"></path>
+                                <path
+                                    d="M63,37c-6.7-4-4-27-13-27s-6.3,23-13,27-27,4-27,13,20.3,9,27,13,4,27,13,27,6.3-23,13-27,27-4,27-13-20.3-9-27-13Z"
+                                    fill="url(#gradient-5)"></path>
+                            </g>
+                        </svg>
+                        <svg id="pegtoptwo" xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 100 100">
+                            <defs>
+                                <filter id="shine-2">
+                                    <feGaussianBlur stdDeviation="3"></feGaussianBlur>
+                                </filter>
+                                <mask id="mask-2">
+                                    <path
+                                        d="M63,37c-6.7-4-4-27-13-27s-6.3,23-13,27-27,4-27,13,20.3,9,27,13,4,27,13,27,6.3-23,13-27,27-4,27-13-20.3-9-27-13Z"
+                                        fill="white"></path>
+                                </mask>
+                                <radialGradient id="gradient-1-2" cx="50" cy="66" fx="50" fy="66" r="30"
+                                    gradientTransform="translate(0 35) scale(1 0.5)" gradientUnits="userSpaceOnUse">
+                                    <stop offset="0%" stop-color="black" stop-opacity="0.3"></stop>
+                                    <stop offset="50%" stop-color="black" stop-opacity="0.1"></stop>
+                                    <stop offset="100%" stop-color="black" stop-opacity="0"></stop>
+                                </radialGradient>
+                                <radialGradient id="gradient-2-2" cx="55" cy="20" fx="55" fy="20" r="30"
+                                    gradientUnits="userSpaceOnUse">
+                                    <stop offset="0%" stop-color="white" stop-opacity="0.3"></stop>
+                                    <stop offset="50%" stop-color="white" stop-opacity="0.1"></stop>
+                                    <stop offset="100%" stop-color="white" stop-opacity="0"></stop>
+                                </radialGradient>
+                                <radialGradient id="gradient-3-2" cx="85" cy="50" fx="85" fy="50"
+                                    xlink:href="#gradient-2-2"></radialGradient>
+                                <radialGradient id="gradient-4-2" cx="50" cy="58" fx="50" fy="58" r="60"
+                                    gradientTransform="translate(0 47) scale(1 0.2)" xlink:href="#gradient-3-2">
+                                </radialGradient>
+                                <linearGradient id="gradient-5-2" x1="50" y1="90" x2="50" y2="10"
+                                    gradientUnits="userSpaceOnUse">
+                                    <stop offset="0%" stop-color="black" stop-opacity="0.2"></stop>
+                                    <stop offset="40%" stop-color="black" stop-opacity="0"></stop>
+                                </linearGradient>
+                            </defs>
+                            <g>
+                                <path
+                                    d="M63,37c-6.7-4-4-27-13-27s-6.3,23-13,27-27,4-27,13,20.3,9,27,13,4,27,13,27,6.3-23,13-27,27-4,27-13-20.3-9-27-13Z"
+                                    fill="currentColor"></path>
+                                <path
+                                    d="M63,37c-6.7-4-4-27-13-27s-6.3,23-13,27-27,4-27,13,20.3,9,27,13,4,27,13,27,6.3-23,13-27,27-4,27-13-20.3-9-27-13Z"
+                                    fill="url(#gradient-1-2)"></path>
+                                <path
+                                    d="M63,37c-6.7-4-4-27-13-27s-6.3,23-13,27-27,4-27,13,20.3,9,27,13,4,27,13,27,6.3-23,13-27,27-4,27-13-20.3-9-27-13Z"
+                                    fill="none" stroke="white" opacity="0.3" stroke-width="3" filter="url(#shine-2)"
+                                    mask="url(#mask-2)"></path>
+                                <path
+                                    d="M63,37c-6.7-4-4-27-13-27s-6.3,23-13,27-27,4-27,13,20.3,9,27,13,4,27,13,27,6.3-23,13-27,27-4,27-13-20.3-9-27-13Z"
+                                    fill="url(#gradient-2-2)"></path>
+                                <path
+                                    d="M63,37c-6.7-4-4-27-13-27s-6.3,23-13,27-27,4-27,13,20.3,9,27,13,4,27,13,27,6.3-23,13-27,27-4,27-13-20.3-9-27-13Z"
+                                    fill="url(#gradient-3-2)"></path>
+                                <path
+                                    d="M63,37c-6.7-4-4-27-13-27s-6.3,23-13,27-27,4-27,13,20.3,9,27,13,4,27,13,27,6.3-23,13-27,27-4,27-13-20.3-9-27-13Z"
+                                    fill="url(#gradient-4-2)"></path>
+                                <path
+                                    d="M63,37c-6.7-4-4-27-13-27s-6.3,23-13,27-27,4-27,13,20.3,9,27,13,4,27,13,27,6.3-23,13-27,27-4,27-13-20.3-9-27-13Z"
+                                    fill="url(#gradient-5-2)"></path>
+                            </g>
+                        </svg>
+                        <svg id="pegtopthree" xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 100 100">
+                            <defs>
+                                <filter id="shine-3">
+                                    <feGaussianBlur stdDeviation="3"></feGaussianBlur>
+                                </filter>
+                                <mask id="mask-3">
+                                    <path
+                                        d="M63,37c-6.7-4-4-27-13-27s-6.3,23-13,27-27,4-27,13,20.3,9,27,13,4,27,13,27,6.3-23,13-27,27-4,27-13-20.3-9-27-13Z"
+                                        fill="white"></path>
+                                </mask>
+                                <radialGradient id="gradient-1-3" cx="50" cy="66" fx="50" fy="66" r="30"
+                                    gradientTransform="translate(0 35) scale(1 0.5)" gradientUnits="userSpaceOnUse">
+                                    <stop offset="0%" stop-color="black" stop-opacity="0.3"></stop>
+                                    <stop offset="50%" stop-color="black" stop-opacity="0.1"></stop>
+                                    <stop offset="100%" stop-color="black" stop-opacity="0"></stop>
+                                </radialGradient>
+                                <radialGradient id="gradient-2-3" cx="55" cy="20" fx="55" fy="20" r="30"
+                                    gradientUnits="userSpaceOnUse">
+                                    <stop offset="0%" stop-color="white" stop-opacity="0.3"></stop>
+                                    <stop offset="50%" stop-color="white" stop-opacity="0.1"></stop>
+                                    <stop offset="100%" stop-color="white" stop-opacity="0"></stop>
+                                </radialGradient>
+                                <radialGradient id="gradient-3-3" cx="85" cy="50" fx="85" fy="50"
+                                    xlink:href="#gradient-2-3"></radialGradient>
+                                <radialGradient id="gradient-4-3" cx="50" cy="58" fx="50" fy="58" r="60"
+                                    gradientTransform="translate(0 47) scale(1 0.2)" xlink:href="#gradient-3-3">
+                                </radialGradient>
+                                <linearGradient id="gradient-5-3" x1="50" y1="90" x2="50" y2="10"
+                                    gradientUnits="userSpaceOnUse">
+                                    <stop offset="0%" stop-color="black" stop-opacity="0.2"></stop>
+                                    <stop offset="40%" stop-color="black" stop-opacity="0"></stop>
+                                </linearGradient>
+                            </defs>
+                            <g>
+                                <path
+                                    d="M63,37c-6.7-4-4-27-13-27s-6.3,23-13,27-27,4-27,13,20.3,9,27,13,4,27,13,27,6.3-23,13-27,27-4,27-13-20.3-9-27-13Z"
+                                    fill="currentColor"></path>
+                                <path
+                                    d="M63,37c-6.7-4-4-27-13-27s-6.3,23-13,27-27,4-27,13,20.3,9,27,13,4,27,13,27,6.3-23,13-27,27-4,27-13-20.3-9-27-13Z"
+                                    fill="url(#gradient-1-3)"></path>
+                                <path
+                                    d="M63,37c-6.7-4-4-27-13-27s-6.3,23-13,27-27,4-27,13,20.3,9,27,13,4,27,13,27,6.3-23,13-27,27-4,27-13-20.3-9-27-13Z"
+                                    fill="none" stroke="white" opacity="0.3" stroke-width="3" filter="url(#shine-3)"
+                                    mask="url(#mask-3)"></path>
+                                <path
+                                    d="M63,37c-6.7-4-4-27-13-27s-6.3,23-13,27-27,4-27,13,20.3,9,27,13,4,27,13,27,6.3-23,13-27,27-4,27-13-20.3-9-27-13Z"
+                                    fill="url(#gradient-2-3)"></path>
+                                <path
+                                    d="M63,37c-6.7-4-4-27-13-27s-6.3,23-13,27-27,4-27,13,20.3,9,27,13,4,27,13,27,6.3-23,13-27,27-4,27-13-20.3-9-27-13Z"
+                                    fill="url(#gradient-3-3)"></path>
+                                <path
+                                    d="M63,37c-6.7-4-4-27-13-27s-6.3,23-13,27-27,4-27,13,20.3,9,27,13,4,27,13,27,6.3-23,13-27,27-4,27-13-20.3-9-27-13Z"
+                                    fill="url(#gradient-4-3)"></path>
+                                <path
+                                    d="M63,37c-6.7-4-4-27-13-27s-6.3,23-13,27-27,4-27,13,20.3,9,27,13,4,27,13,27,6.3-23,13-27,27-4,27-13-20.3-9-27-13Z"
+                                    fill="url(#gradient-5-3)"></path>
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="dashboard" class="hidden mt-20 space-y-12">
+            <h2 class="text-5xl font-extrabold tracking-tighter">Your AI Roadmap</h2>
+            <div id="results-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            </div>
+        </section>
+    </main>
+
+    <!-- Pricing Modal -->
+    <div id="pricing-modal" class="pricing-modal-overlay hidden" onclick="if(event.target===this) closePricingModal()">
+        <div class="pricing-modal-inner">
+            <button onclick="closePricingModal()"
+                class="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors z-10">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+            </button>
+            <div class="text-center mb-10">
+                <p class="text-xs font-bold uppercase tracking-[0.35em] text-indigo-400 mb-3">CHOOSE YOUR PLAN</p>
+                <h2 class="text-4xl font-extrabold tracking-tighter">Execution starts here. <span
+                        class="gradient-text">Pick your tier.</span></h2>
+                <p class="opacity-50 mt-3 text-sm max-w-md mx-auto">Every plan includes the AI Roadmap engine. Pro tiers
+                    unlock the human layer.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                <!-- Student Plan -->
+                <div class="pricing-card">
+                    <div class="mb-6">
+                        <p class="text-xs uppercase tracking-widest font-bold text-sky-400 mb-2">Student</p>
+                        <div class="flex items-end gap-1 mb-1">
+                            <span class="text-5xl font-black">₹399</span>
+                            <span class="opacity-50 text-sm mb-2">/month</span>
+                        </div>
+                        <p class="text-xs opacity-40">Billed annually · Best for college founders</p>
+                    </div>
+                    <div class="space-y-1 flex-1 mb-8">
+                        <div class="pricing-feat"><svg class="check w-4 h-4" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg><span>5 AI Roadmap generations/month</span></div>
+                        <div class="pricing-feat"><svg class="check w-4 h-4" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg><span>Feasibility + SWOT Analysis</span></div>
+                        <div class="pricing-feat"><svg class="check w-4 h-4" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg><span>Competitor Landscape Report</span></div>
+                        <div class="pricing-feat"><svg class="check w-4 h-4" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg><span>MVP Core Feature Planning</span></div>
+                        <div class="pricing-feat"><svg class="cross w-4 h-4" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M6 18L18 6M6 6l12 12"></path>
+                            </svg><span class="opacity-30">1-on-1 Mentor Sessions</span></div>
+                        <div class="pricing-feat"><svg class="cross w-4 h-4" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M6 18L18 6M6 6l12 12"></path>
+                            </svg><span class="opacity-30">Investor Introductions</span></div>
+                        <div class="pricing-feat"><svg class="cross w-4 h-4" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M6 18L18 6M6 6l12 12"></path>
+                            </svg><span class="opacity-30">Sprint Tracking Dashboard</span></div>
+                        <div class="pricing-feat"><svg class="cross w-4 h-4" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M6 18L18 6M6 6l12 12"></path>
+                            </svg><span class="opacity-30">Priority Support</span></div>
+                    </div>
+                    <button
+                        class="w-full py-4 rounded-2xl font-bold text-sm border border-sky-400/40 text-sky-400 hover:bg-sky-400/10 transition-colors">Get
+                        Student Plan</button>
+                </div>
+
+                <!-- Monthly Plan (Featured) -->
+                <div class="pricing-card featured relative">
+                    <div
+                        class="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-sky-400 to-indigo-500 text-white text-xs font-black px-5 py-1.5 rounded-full uppercase tracking-widest">
+                        Most Popular</div>
+                    <div class="mb-6">
+                        <p class="text-xs uppercase tracking-widest font-bold text-indigo-400 mb-2">Monthly Pro</p>
+                        <div class="flex items-end gap-1 mb-1">
+                            <span class="text-5xl font-black">₹1,299</span>
+                            <span class="opacity-50 text-sm mb-2">/month</span>
+                        </div>
+                        <p class="text-xs opacity-40">Billed monthly · Flexible, cancel anytime</p>
+                    </div>
+                    <div class="space-y-1 flex-1 mb-8">
+                        <div class="pricing-feat"><svg class="check w-4 h-4" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg><span>Unlimited AI Roadmap generations</span></div>
+                        <div class="pricing-feat"><svg class="check w-4 h-4" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg><span>Full 8-Card Deep Analysis</span></div>
+                        <div class="pricing-feat"><svg class="check w-4 h-4" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg><span>Market Sentiment + Trend Reports</span></div>
+                        <div class="pricing-feat"><svg class="check w-4 h-4" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg><span>Expert Mentor Matching</span></div>
+                        <div class="pricing-feat"><svg class="check w-4 h-4" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg><span>2 × 1-on-1 Mentor Sessions/month</span></div>
+                        <div class="pricing-feat"><svg class="check w-4 h-4" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg><span>Sprint Tracking Dashboard</span></div>
+                        <div class="pricing-feat"><svg class="cross w-4 h-4" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M6 18L18 6M6 6l12 12"></path>
+                            </svg><span class="opacity-30">Live Investor Introductions</span></div>
+                        <div class="pricing-feat"><svg class="cross w-4 h-4" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M6 18L18 6M6 6l12 12"></path>
+                            </svg><span class="opacity-30">Dedicated Account Manager</span></div>
+                    </div>
+                    <button class="w-full py-4 rounded-2xl font-black text-sm text-white"
+                        style="background: linear-gradient(135deg, var(--grad-start), var(--grad-end)); box-shadow: 0 0 30px rgba(99,102,241,0.35);">Start
+                        Monthly Pro</button>
+                </div>
+
+                <!-- Yearly Plan -->
+                <div class="pricing-card">
+                    <div class="mb-6">
+                        <p class="text-xs uppercase tracking-widest font-bold text-purple-400 mb-2">Yearly Elite</p>
+                        <div class="flex items-end gap-1 mb-1">
+                            <span class="text-5xl font-black">₹799</span>
+                            <span class="opacity-50 text-sm mb-2">/month</span>
+                        </div>
+                        <p class="text-xs opacity-40">Billed ₹9,588/year · Save 38% vs monthly</p>
+                    </div>
+                    <div class="space-y-1 flex-1 mb-8">
+                        <div class="pricing-feat"><svg class="check w-4 h-4" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg><span>Everything in Monthly Pro</span></div>
+                        <div class="pricing-feat"><svg class="check w-4 h-4" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg><span>Unlimited Mentor Sessions</span></div>
+                        <div class="pricing-feat"><svg class="check w-4 h-4" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg><span>Live Investor Introductions</span></div>
+                        <div class="pricing-feat"><svg class="check w-4 h-4" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg><span>Dedicated Account Manager</span></div>
+                        <div class="pricing-feat"><svg class="check w-4 h-4" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg><span>Custom Pitch Deck AI Tool</span></div>
+                        <div class="pricing-feat"><svg class="check w-4 h-4" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg><span>Priority 24/7 Support</span></div>
+                        <div class="pricing-feat"><svg class="check w-4 h-4" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg><span>Early Access to Beta Features</span></div>
+                        <div class="pricing-feat"><svg class="check w-4 h-4" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg><span>Exclusive Founder Community Access</span></div>
+                    </div>
+                    <button
+                        class="w-full py-4 rounded-2xl font-bold text-sm border border-purple-400/40 text-purple-400 hover:bg-purple-400/10 transition-colors">Get
+                        Yearly Elite</button>
+                </div>
+
+            </div>
+            <p class="text-center text-xs opacity-30 mt-8">All prices in INR. Secure payment via Razorpay. Cancel
+                anytime.</p>
+        </div>
+    </div>
+
+    <footer class="footer-glass mt-32 py-16 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+                <!-- Brand Column -->
+                <div class="space-y-6">
+                    <div class="text-3xl font-extrabold tracking-tighter gradient-text">改 KAIZEN</div>
+                    <p class="text-sm opacity-60 leading-relaxed max-w-xs">
+                        Empowering the next generation of founders with AI-driven execution strategies and elite
+                        mentorship.
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="#" class="social-icon">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" />
+                            </svg>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                            </svg>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Links Column 1 -->
+                <div class="space-y-6">
+                    <h4 class="font-bold uppercase tracking-widest text-xs text-sky-400">Platform</h4>
+                    <ul class="space-y-4 text-sm opacity-60">
+                        <li><a href="#" class="footer-link">AI Roadmap</a></li>
+                        <li><a href="#" class="footer-link">Market Analysis</a></li>
+                        <li><a href="#" class="footer-link">Expert Matching</a></li>
+                        <li><a href="#" class="footer-link">Funding Deck</a></li>
+                    </ul>
+                </div>
+
+                <!-- Links Column 2 -->
+                <div class="space-y-6">
+                    <h4 class="font-bold uppercase tracking-widest text-xs text-indigo-400">Ecosystem</h4>
+                    <ul class="space-y-4 text-sm opacity-60">
+                        <li><a href="#" class="footer-link">Documentation</a></li>
+                        <li><a href="#" class="footer-link">Founder Community</a></li>
+                        <li><a href="#" class="footer-link">API Access</a></li>
+                        <li><a href="#" class="footer-link">Success Stories</a></li>
+                    </ul>
+                </div>
+
+                <!-- Links Column 3 -->
+                <div class="space-y-6">
+                    <h4 class="font-bold uppercase tracking-widest text-xs text-purple-400">Company</h4>
+                    <ul class="space-y-4 text-sm opacity-60">
+                        <li><a href="#" class="footer-link">Our Mission</a></li>
+                        <li><a href="#" class="footer-link">Privacy Policy</a></li>
+                        <li><a href="#" class="footer-link">Terms of Service</a></li>
+                        <li><a href="#" class="footer-link">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Bottom Bar -->
+            <div
+                class="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-xs opacity-40">
+                <p>&copy; 2026 KAIZEN AI. All rights reserved.</p>
+                <div class="flex gap-8">
+                    <span>Designed for the Next Epoch</span>
+                    <span class="flex items-center gap-1">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        SaaS Engine: Optimized
+                    </span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleTheme() {
+            document.documentElement.classList.toggle('dark');
+            updateThemeIcons();
+        }
+
+        function updateThemeIcons() {
+            const isDark = document.documentElement.classList.contains('dark');
+            const checkbox = document.getElementById('theme-checkbox');
+            if (checkbox) {
+                checkbox.checked = !isDark;
+            }
+        }
+
+        function toggleUpgradeMenu() {
+            document.getElementById('pricing-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePricingModal() {
+            document.getElementById('pricing-modal').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        // ESC key closes pricing modal
+        window.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') closePricingModal();
+        });
+
+        // Initialize icons on load
+        document.addEventListener('DOMContentLoaded', updateThemeIcons);
+        // Fallback if already loaded
+        updateThemeIcons();
+
+        async function generateRoadmap() {
+            const idea = document.getElementById('idea').value;
+            const domain = document.getElementById('domain').value;
+            const audience = document.getElementById('audience').value;
+            const monetization = document.getElementById('monetization').value;
+            const experience = document.getElementById('experience').value;
+            const budget = document.getElementById('budget').value;
+            const timeline = document.getElementById('timeline').value;
+
+            if (!idea) return alert("Please enter your startup idea first!");
+
+            document.getElementById('hero-section').style.opacity = "0.3";
+            const btn = document.getElementById('generate-btn-wrapper');
+            const loader = document.getElementById('processing-loader');
+
+            // Show new loader animation
+            btn.classList.add('hidden');
+            loader.classList.remove('hidden');
+
+            try {
+                // Using absolute URL to ensure it hits the Python server
+                const response = await fetch('http://127.0.0.1:8000/generate-roadmap', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ idea, domain, audience, monetization, experience, budget, timeline })
+                });
+
+                const data = await response.json();
+                renderDashboard(data);
+            } catch (error) {
+                alert("Server Error: Make sure main.py is running on port 8000");
+            } finally {
+                document.getElementById('hero-section').style.opacity = "1";
+                // Restore button and hide loader animation
+                loader.classList.add('hidden');
+                btn.classList.remove('hidden');
+            }
+        }
+
+        function flipCard(card) {
+            // If already flipped, don't do anything (use close button to close)
+            if (card.classList.contains('flipped')) return;
+
+            // Close any currently flipped cards
+            document.querySelectorAll('.flip-card.flipped').forEach(c => {
+                c.classList.remove('flipped');
+            });
+
+            // Flip and pop out this card
+            card.classList.add('flipped');
+            document.body.classList.add('card-is-flipped');
+        }
+
+        function closeFlippedCard(e, card) {
+            e.stopPropagation(); // Prevent the flipCard click handler from firing
+            card.classList.remove('flipped');
+            document.body.classList.remove('card-is-flipped');
+        }
+
+        // Close flipped card if clicking outside of it (on the backdrop)
+        window.addEventListener('click', function (e) {
+            if (document.body.classList.contains('card-is-flipped')) {
+                // If the click is not inside a flipped card inner container
+                if (!e.target.closest('.flip-card-inner')) {
+                    document.querySelectorAll('.flip-card.flipped').forEach(c => {
+                        c.classList.remove('flipped');
+                    });
+                    document.body.classList.remove('card-is-flipped');
+                }
+            }
+        });
+
+        function renderDashboard(data) {
+            const dashboard = document.getElementById('dashboard');
+            const grid = document.getElementById('results-grid');
+            dashboard.classList.remove('hidden');
+
+            // Set up a 4-column grid for the idea analysis flip cards
+            grid.classList.remove('md:grid-cols-2', 'lg:grid-cols-3');
+            grid.classList.add('grid-cols-1', 'md:grid-cols-2', 'lg:grid-cols-4', 'gap-y-12');
+
+            // Generate all 8 cards from backend data
+            grid.innerHTML = `
+            <!-- Card 1: Feasibility Calc -->
+            <div class="flip-card" onclick="flipCard(this)">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front border-t-4 border-sky-400">
+                        <svg class="w-12 h-12 text-sky-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        <h3 class="text-xl font-bold">Feasibility Calc</h3>
+                        <p class="text-sm opacity-60 mt-2">Weighted Logic Model</p>
+                    </div>
+                    <div class="flip-card-back border-t-0 p-8 text-left items-start justify-start overflow-y-auto w-full">
+                        <button class="close-card-btn" onclick="closeFlippedCard(event, this.closest('.flip-card'))">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        </button>
+                        <div class="w-full">
+                            <div class="flex items-center justify-between mb-6 border-b border-sky-400/20 pb-4">
+                                <h3 class="font-bold text-sky-400 flex items-center gap-2 text-2xl">Feasibility Score</h3>
+                                <div class="text-2xl font-extrabold text-white bg-sky-500 rounded-xl px-4 py-2">${data.feasibility ? data.feasibility.final_percentage.toFixed(1) : (data.feasibility_score || 40)}%</div>
+                            </div>
+                            <div class="mb-4 text-sm opacity-80">Base Score: 40% | Formula-Driven Calculation</div>
+                            <div class="grid grid-cols-1 gap-3 w-full">
+                                <div class="bg-black/20 dark:bg-white/5 p-4 rounded-xl flex justify-between items-center border border-white/5">
+                                    <span class="font-semibold opacity-80">Tech Complexity (30%)</span>
+                                    <span class="font-bold text-sky-400">${data.feasibility ? data.feasibility.tech_complexity : '-'} / 5</span>
+                                </div>
+                                <div class="bg-black/20 dark:bg-white/5 p-4 rounded-xl flex justify-between items-center border border-white/5">
+                                    <span class="font-semibold opacity-80">Market Demand (30%)</span>
+                                    <span class="font-bold text-sky-400">${data.feasibility ? data.feasibility.market_demand : '-'} / 5</span>
+                                </div>
+                                <div class="bg-black/20 dark:bg-white/5 p-4 rounded-xl flex justify-between items-center border border-white/5">
+                                    <span class="font-semibold opacity-80">Resource Match (20%)</span>
+                                    <span class="font-bold text-sky-400">${data.feasibility ? data.feasibility.resource_match : '-'} / 5</span>
+                                </div>
+                                <div class="bg-black/20 dark:bg-white/5 p-4 rounded-xl flex justify-between items-center border border-white/5">
+                                    <span class="font-semibold opacity-80">Legal/Competitive (20%)</span>
+                                    <span class="font-bold text-sky-400">${data.feasibility ? data.feasibility.legal_barriers : '-'} / 5</span>
+                                </div>
+                            </div>
+                            <p class="mt-6 text-sm opacity-70 leading-relaxed italic border-t border-sky-400/10 pt-4">
+                                ${data.idea_analysis?.market_potential || 'Weighted logic accounts for technical overhead and real-world barriers to entry.'}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2: SWOT -->
+            <div class="flip-card" onclick="flipCard(this)">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front border-t-4 border-indigo-400">
+                        <svg class="w-12 h-12 text-indigo-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"></path></svg>
+                        <h3 class="text-xl font-bold">SWOT Analysis</h3>
+                        <p class="text-sm opacity-60 mt-2">Logically Linked Models</p>
+                    </div>
+                    <div class="flip-card-back p-8 border-t-0 text-left items-start justify-start overflow-y-auto w-full">
+                        <button class="close-card-btn" onclick="closeFlippedCard(event, this.closest('.flip-card'))">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        </button>
+                        <div class="w-full">
+                            <div class="border-b border-indigo-400/20 pb-4 mb-6">
+                                <h3 class="font-bold text-indigo-400 text-2xl">SWOT Linkage</h3>
+                            </div>
+                            <div class="grid grid-cols-1 gap-4">
+                                <div class="p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-xl">
+                                    <h4 class="font-bold text-emerald-400 mb-2">Strengths ➔ Opportunities</h4>
+                                    <ul class="text-sm opacity-80 list-disc pl-4 space-y-2">
+                                        ${data.swot?.strengths?.map(s => `<li>${s}</li>`).join('') || '<li>Loading...</li>'}
+                                    </ul>
+                                    <div class="my-3 border-t border-emerald-500/20 w-1/2"></div>
+                                    <ul class="text-sm opacity-80 list-disc pl-4 space-y-2">
+                                        ${data.swot?.opportunities?.map(o => `<li>${o}</li>`).join('') || '<li>Loading...</li>'}
+                                    </ul>
+                                </div>
+                                <div class="p-4 bg-rose-500/10 border border-rose-500/20 rounded-xl">
+                                    <h4 class="font-bold text-rose-400 mb-2">Weaknesses ➔ Threats</h4>
+                                    <ul class="text-sm opacity-80 list-disc pl-4 space-y-2">
+                                        ${data.swot?.weaknesses?.map(w => `<li>${w}</li>`).join('') || '<li>Loading...</li>'}
+                                    </ul>
+                                    <div class="my-3 border-t border-rose-500/20 w-1/2"></div>
+                                    <ul class="text-sm opacity-80 list-disc pl-4 space-y-2">
+                                        ${data.swot?.threats?.map(t => `<li>${t}</li>`).join('') || '<li>Loading...</li>'}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3: Competitors -->
+            <div class="flip-card" onclick="flipCard(this)">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front border-t-4 border-amber-400">
+                        <svg class="w-12 h-12 text-amber-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                        <h3 class="text-xl font-bold">The Competitors</h3>
+                        <p class="text-sm opacity-60 mt-2">2025/2026 Landscape</p>
+                    </div>
+                    <div class="flip-card-back p-8 border-t-0 text-left items-start justify-start overflow-y-auto w-full">
+                        <button class="close-card-btn" onclick="closeFlippedCard(event, this.closest('.flip-card'))">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        </button>
+                        <div class="w-full">
+                            <div class="border-b border-amber-400/20 pb-4 mb-6">
+                                <h3 class="font-bold text-amber-400 text-2xl">Competitor Gaps</h3>
+                            </div>
+                            <div class="space-y-4">
+                                ${data.competitors?.map(comp => `
+                                <div class="bg-black/20 dark:bg-white/5 p-5 rounded-xl border border-amber-500/20">
+                                    <h4 class="font-bold text-xl text-amber-300 mb-3">${comp.name}</h4>
+                                    <p class="text-sm opacity-90 mb-2 leading-relaxed"><strong class="text-white">Gap Win:</strong> ${comp.competitor_wins}</p>
+                                    <p class="text-sm opacity-90 leading-relaxed"><strong class="text-amber-400">Vulnerability:</strong> ${comp.competitor_vulnerable}</p>
+                                </div>
+                                `).join('') || '<p>Searching landscape...</p>'}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 4: Market Sentiment -->
+            <div class="flip-card" onclick="flipCard(this)">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front border-t-4 border-rose-500">
+                        <svg class="w-12 h-12 text-rose-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                        <h3 class="text-xl font-bold">Market Grounding</h3>
+                        <p class="text-sm opacity-60 mt-2">Data & Critical Failure</p>
+                    </div>
+                    <div class="flip-card-back p-8 border-t-0 text-left items-start justify-start overflow-y-auto w-full">
+                        <button class="close-card-btn" onclick="closeFlippedCard(event, this.closest('.flip-card'))">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        </button>
+                        <div class="w-full">
+                            <div class="border-b border-rose-500/20 pb-4 mb-6">
+                                <h3 class="font-bold text-rose-500 text-2xl">Sentiment & Reality</h3>
+                            </div>
+                            <div class="bg-black/20 dark:bg-white/5 p-5 rounded-xl border border-rose-500/30 mb-4">
+                                <h4 class="font-bold mb-3 text-lg">2024-2026 Trends</h4>
+                                <ul class="text-sm opacity-80 list-disc pl-4 space-y-2">
+                                    ${data.market_sentiment?.trends?.map(t => `<li>${t}</li>`).join('') || '<li>Analyzing trends...</li>'}
+                                </ul>
+                            </div>
+                            <div class="bg-gradient-to-br from-rose-500/20 to-rose-600/5 p-6 rounded-2xl border border-rose-500/30 mt-6 text-center">
+                                <h4 class="text-xl font-black mb-2 text-rose-400 uppercase tracking-tighter">Critical Failure Point</h4>
+                                <p class="text-base font-semibold opacity-90 mb-0">${data.market_sentiment?.critical_failure_point || 'Insufficient data'}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 5: Execution Plan -->
+            <div class="flip-card" onclick="flipCard(this)">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front border-t-4 border-indigo-500">
+                        <svg class="w-12 h-12 text-indigo-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                        <h3 class="text-xl font-bold">Execution Plan</h3>
+                        <p class="text-sm opacity-60 mt-2">5-Step Validation</p>
+                    </div>
+                    <div class="flip-card-back p-8 border-t-0 text-left items-start justify-start overflow-y-auto w-full">
+                        <button class="close-card-btn" onclick="closeFlippedCard(event, this.closest('.flip-card'))">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        </button>
+                        <div class="w-full">
+                            <div class="border-b border-indigo-500/20 pb-4 mb-6">
+                                <h3 class="font-bold text-indigo-400 text-2xl">Step-by-Step Validation</h3>
+                            </div>
+                            <div class="space-y-4">
+                                ${data.validation_plan?.map((step, i) => `
+                                <div class="flex gap-4 items-start p-4 bg-black/20 dark:bg-white/5 rounded-xl border border-indigo-500/10 hover:border-indigo-500/40 transition-colors">
+                                    <div class="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center text-white font-bold shrink-0">${i + 1}</div>
+                                    <p class="text-sm font-medium leading-relaxed">${step}</p>
+                                </div>
+                                `).join('') || '<p>Drafting plan...</p>'}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 6: Expert Matches -->
+            <div class="flip-card" onclick="flipCard(this)">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front border-t-4 border-purple-500">
+                        <svg class="w-12 h-12 text-purple-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                        <h3 class="text-xl font-bold">Expert Matches</h3>
+                        <p class="text-sm opacity-60 mt-2">Targeted Mentorship</p>
+                    </div>
+                    <div class="flip-card-back p-8 border-t-0 text-left items-start justify-start overflow-y-auto w-full">
+                        <button class="close-card-btn" onclick="closeFlippedCard(event, this.closest('.flip-card'))">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        </button>
+                        <div class="w-full">
+                            <div class="border-b border-purple-500/20 pb-4 mb-6">
+                                <h3 class="font-bold text-purple-400 text-2xl">Curated Mentors</h3>
+                            </div>
+                            <div class="space-y-4">
+                                ${data.matched_mentors?.map(mentor => `
+                                <div class="bg-black/20 dark:bg-white/5 p-5 rounded-xl border border-purple-500/20">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <h4 class="font-bold text-lg text-purple-300">${mentor.name}</h4>
+                                        <span class="text-xs font-bold bg-purple-500/20 px-2 py-1 rounded text-purple-200">${mentor.fee}</span>
+                                    </div>
+                                    <p class="text-xs text-purple-400 font-bold mb-2 uppercase tracking-wide">${mentor.role}</p>
+                                    <p class="text-sm opacity-80 leading-relaxed">${mentor.bio}</p>
+                                    <button class="mt-4 w-full py-2 bg-purple-500 text-white rounded font-bold text-sm">Request Intro</button>
+                                </div>
+                                `).join('') || '<p>Finding matches...</p>'}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 7: MVP Features -->
+            <div class="flip-card" onclick="flipCard(this)">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front border-t-4 border-emerald-500">
+                        <svg class="w-12 h-12 text-emerald-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+                        <h3 class="text-xl font-bold">MVP Core</h3>
+                        <p class="text-sm opacity-60 mt-2">V1 Feature Set</p>
+                    </div>
+                    <div class="flip-card-back p-8 border-t-0 text-left items-start justify-start overflow-y-auto w-full">
+                        <button class="close-card-btn" onclick="closeFlippedCard(event, this.closest('.flip-card'))">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        </button>
+                        <div class="w-full">
+                            <div class="border-b border-emerald-500/20 pb-4 mb-6">
+                                <h3 class="font-bold text-emerald-400 text-2xl">Core Features</h3>
+                            </div>
+                            <div class="space-y-4">
+                                ${data.core_features?.map(feat => `
+                                <div class="p-4 bg-emerald-500/5 rounded-xl border border-emerald-500/20">
+                                    <h4 class="font-bold text-emerald-300 mb-1">${feat.name}</h4>
+                                    <p class="text-sm opacity-80 leading-relaxed">${feat.desc}</p>
+                                </div>
+                                `).join('') || '<p>Sculpting MVP...</p>'}
+                            </div>
+                            <div class="mt-6 p-4 bg-rose-500/10 rounded-xl border border-rose-500/20">
+                                <h4 class="font-bold text-rose-400 text-sm uppercase mb-2">Avoid This in V1</h4>
+                                <p class="text-sm opacity-80">${data.avoid_feature || 'Shiny object syndrome features.'}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 8: Funding -->
+            <div class="flip-card" onclick="flipCard(this)">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front border-t-4 border-amber-500">
+                        <svg class="w-12 h-12 text-amber-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <h3 class="text-xl font-bold">Funding</h3>
+                        <p class="text-sm opacity-60 mt-2">Capital Strategy</p>
+                    </div>
+                    <div class="flip-card-back p-8 border-t-0 text-left items-start justify-start overflow-y-auto w-full">
+                        <button class="close-card-btn" onclick="closeFlippedCard(event, this.closest('.flip-card'))">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        </button>
+                        <div class="w-full">
+                            <div class="border-b border-amber-500/20 pb-4 mb-6">
+                                <h3 class="font-bold text-amber-400 text-2xl">Capital Strategy</h3>
+                            </div>
+                            <div class="space-y-4">
+                                <div class="p-5 bg-black/20 dark:bg-white/5 rounded-xl border border-amber-500/20">
+                                    <h4 class="font-bold text-amber-300 mb-2">Phase 1: Bootstrapped</h4>
+                                    <p class="text-sm opacity-80 leading-relaxed">${data.funding_plan?.phase1_bootstrapped || 'Loading calculation...'}</p>
+                                </div>
+                                <div class="p-5 bg-black/20 dark:bg-white/5 rounded-xl border border-white/5">
+                                    <h4 class="font-bold text-gray-300 mb-2">Phase 2: Transition</h4>
+                                    <p class="text-sm opacity-80 leading-relaxed">${data.funding_plan?.phase2_preseed || 'Loading strategy...'}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+`;
+
+            // Inject upgrade CTA banner below the cards
+            const existingBanner = document.getElementById('upgrade-cta-banner');
+            if (existingBanner) existingBanner.remove();
+
+            const ctaBanner = document.createElement('div');
+            ctaBanner.id = 'upgrade-cta-banner';
+            ctaBanner.className = 'mt-16 w-full';
+            ctaBanner.innerHTML = `
+                <div class="relative glass rounded-[2.5rem] overflow-hidden px-10 py-14 text-center" style="border-top: 1px solid rgba(99,102,241,0.25); background: linear-gradient(135deg, rgba(99,102,241,0.08) 0%, rgba(34,211,238,0.06) 100%);">
+                    <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(ellipse at 50% 0%, rgba(99,102,241,0.15) 0%, transparent 70%);"></div>
+                    <p class="text-sm font-bold uppercase tracking-[0.35em] text-indigo-400 mb-4">NEXT LEVEL</p>
+                    <h2 class="text-4xl md:text-5xl font-extrabold tracking-tighter mb-5">
+                        Want complete execution support?<br>
+                        <span class="gradient-text">Upgrade to Pro.</span>
+                    </h2>
+                    <p class="text-lg opacity-60 max-w-xl mx-auto mb-10 leading-relaxed">Unlock 1-on-1 mentor sessions, live investor introductions, dedicated sprint tracking, and unlimited AI roadmap generations.</p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                        <button onclick="toggleUpgradeMenu()" class="px-10 py-4 rounded-2xl font-extrabold text-white text-base tracking-wide" style="background: linear-gradient(135deg, var(--grad-start), var(--grad-end)); box-shadow: 0 0 40px rgba(99,102,241,0.3); transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 0 60px rgba(99,102,241,0.5)'" onmouseout="this.style.transform=''; this.style.boxShadow='0 0 40px rgba(99,102,241,0.3)'">
+                            Upgrade Now →
+                        </button>
+                        <a href="#" class="text-sm opacity-50 hover:opacity-80 transition-opacity font-medium underline underline-offset-4">Compare plans</a>
+                    </div>
+                </div>
+            `;
+            dashboard.appendChild(ctaBanner);
+
+            window.scrollTo({ top: dashboard.offsetTop - 50, behavior: 'smooth' });
+        }
+    </script>
+</body>
+
+</html>
