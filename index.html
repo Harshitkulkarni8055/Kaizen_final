@@ -2024,13 +2024,13 @@
                             Budget</label>
                         <select id="budget"
                             class="bg-transparent border-2 border-sky-200 dark:border-sky-800 focus:border-indigo-400 p-4 rounded-xl text-black dark:text-white outline-none cursor-pointer transition-colors w-full appearance-none">
-                            <option value="Bootstrap" class="dark:bg-gray-800 text-black dark:text-white">$0 - $1,000
+                            <option value="Bootstrap" class="dark:bg-gray-800 text-black dark:text-white">Rs.0 - Rs.1,000
                                 (Bootstrapped)</option>
-                            <option value="Low" class="dark:bg-gray-800 text-black dark:text-white">$1k - $10k
+                            <option value="Low" class="dark:bg-gray-800 text-black dark:text-white">Rs.1k - Rs.10k
                                 (Self-Funded)</option>
-                            <option value="Medium" class="dark:bg-gray-800 text-black dark:text-white">$10k - $50k
+                            <option value="Medium" class="dark:bg-gray-800 text-black dark:text-white">Rs.10k - Rs.50k
                                 (Pre-Seed/F&F)</option>
-                            <option value="High" class="dark:bg-gray-800 text-black dark:text-white">$50k+ (Seed Funded)
+                            <option value="High" class="dark:bg-gray-800 text-black dark:text-white">Rs.50k+ (Seed Funded)
                             </option>
                         </select>
                     </div>
@@ -2583,55 +2583,61 @@
         // Fallback if already loaded
         updateThemeIcons();
 
-        async function generateRoadmap() {
-            const idea = document.getElementById('idea').value;
-            const domain = document.getElementById('domain').value;
-            const audience = document.getElementById('audience').value;
-            const monetization = document.getElementById('monetization').value;
-            const experience = document.getElementById('experience').value;
-            const budget = document.getElementById('budget').value;
-            const timeline = document.getElementById('timeline').value;
+   async function generateRoadmap() {
+    // 1. Grab all the new inputs
+    const idea = document.getElementById('idea').value;
+    const domain = document.getElementById('domain').value;
+    const audience = document.getElementById('audience').value;
+    const monetization = document.getElementById('monetization').value;
+    const experience = document.getElementById('experience').value;
+    const budget = document.getElementById('budget').value;
+    const timeline = document.getElementById('timeline').value;
 
-            if (!idea) return alert("Please enter your startup idea first!");
+    if (idea.trim().length < 5) {
+        alert("Please describe your idea in more detail.");
+        return;
+    }
 
-            document.getElementById('hero-section').style.opacity = "0.3";
-            const btn = document.getElementById('generate-btn-wrapper');
-            const loader = document.getElementById('processing-loader');
+    const btn = document.getElementById('generate-btn-wrapper');
+    btn.style.pointerEvents = 'none';
+    btn.style.opacity = '0.6';
+    const originalHTML = btn.innerHTML;
+    btn.innerHTML = '<span style="z-index:2;position:relative;font-family:Poppins,sans-serif;font-size:1.1em;color:var(--text-primary)">Analyzing Your Startup...</span>';
+    const loader = document.getElementById('processing-loader');
+    if (loader) { loader.classList.remove('hidden'); loader.classList.add('flex'); }
 
-            // Show new loader animation
-            btn.classList.add('hidden');
-            loader.classList.remove('hidden');
+    try {
+        const response = await fetch("/generate-roadmap", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                idea, domain, audience, monetization, experience, budget, timeline
+            })
+        });
 
-            try {
-                // Using absolute URL to ensure it hits the Python server
-                const response = await fetch('/generate-roadmap', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ idea, domain, audience, monetization, experience, budget, timeline })
-                });
+        if (!response.ok) throw new Error("Server Error");
 
-                const data = await response.json();
-                renderDashboard(data);
-            } catch (error) {
-                alert("Server Error: Make sure main.py is running on port 8000");
-            } finally {
-                document.getElementById('hero-section').style.opacity = "1";
-                // Restore button and hide loader animation
-                loader.classList.add('hidden');
-                btn.classList.remove('hidden');
-            }
-        }
+        const data = await response.json();
+        renderDashboard(data);
+        document.getElementById('dashboard').classList.remove('hidden');
+
+    } catch (error) {
+        alert("Error generating roadmap. Please try again.");
+    } finally {
+        btn.innerHTML = originalHTML;
+        btn.style.pointerEvents = '';
+        btn.style.opacity = '';
+        const loader2 = document.getElementById('processing-loader');
+        if (loader2) { loader2.classList.add('hidden'); loader2.classList.remove('flex'); }
+    }
+}
+
 
         function flipCard(card) {
-            // If already flipped, don't do anything (use close button to close)
             if (card.classList.contains('flipped')) return;
-
-            // Close any currently flipped cards
             document.querySelectorAll('.flip-card.flipped').forEach(c => {
                 c.classList.remove('flipped');
             });
-
-            // Flip and pop out this card
             card.classList.add('flipped');
             document.body.classList.add('card-is-flipped');
         }
@@ -2972,6 +2978,5 @@
         }
     </script>
 </body>
-
 
 </html>
